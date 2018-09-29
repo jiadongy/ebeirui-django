@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block titile %}
+    首页 | 贝睿求职
+{% endblock %}
+
+{% load staticfiles %}
+<!--crumbs start-->
+{% block custom_bread %}
+{% endblock %}
+
+
+{% block content %}
+    <div class="banner">
+        <div class="wp">
+            <div class="fl">
+                <div class="imgslide">
+                    <ul class="imgs">
+
+                        {% for banner in all_banner %}
+                            <li>
+                                <a href="{{ banner.url }}">
+                                    <img width="1200" height="478" src="{{ MEDIA_URL }}{{ banner.image }}"/>
+                                </a>
+                            </li>
+                        {% endfor %}
+
+                    </ul>
+                </div>
+                <div class="unslider-arrow prev"></div>
+                <div class="unslider-arrow next"></div>
+            </div>
+
+        </div>
+
+
+    </div>
+    <!--banner end-->
+    <!--feature start-->
+    <section>
+        <div class="wp">
+            <ul class="feature">
+                <li class="feature1">
+                    <img class="pic" src="{% static 'images/feature1.png' %}"/>
+                    <p class="center">专业权威</p>
+                </li>
+                <li class="feature2">
+                    <img class="pic" src="{% static 'images/feature2.png' %}"/>
+                    <p class="center">职前教育</p>
+                </li>
+                <li class="feature3">
+                    <img class="pic" src="{% static 'images/feature3.png' %}"/>
+                    <p class="center">行业大拿</p>
+                </li>
+                <li class="feature4">
+                    <img class="pic" src="{% static 'images/feature4.png' %}"/>
+                    <p class="center">数据真实</p>
+                </li>
+            </ul>
+        </div>
+    </section>
+    <!--feature end-->
+    <!--module1 start-->
+    <section>
+        <div class="module">
+            <div class="wp">
+                <h1>公开职位</h1>
+                <div class="module1 eachmod">
+                    <div class="module1_1 left">
+                        <img width="228" height="614" src="{% static 'images/module1_1.jpg' %}"/>
+                        <p class="fisrt_word">贝睿精心挑选<br/>专业权威</p>
+                        <a class="more" href="{% url 'jobs:job_list' %}">查看更多信息 ></a>
+                    </div>
+                    <div class="right group_list">
+
+                        {% for job in jobs %}
+                            <div class=" box" style="margin-right: 5px;margin-bottom: 7px">
+                                <a href="{% url 'jobs:job_detail' job.id %}">
+                                    <img width="220" height="170" src="{{ MEDIA_URL }}{{ job.company.image }}"/>
+                                </a>
+                                <div class="des">
+                                    <a href="{% url 'jobs:job_detail' job.id %}">
+                                        <h2> {{ job.title }}</h2>
+                                    </a>
+                                    <span class="fl">地点：<i class="key">{{ job.city }}</i></span>
+                                    <span class="fr">部门：{{ job.depart }}</span>
+                                </div>
+                                <div class="bottom">
+                                    <span class="fl" >{{ job.company.name }}</span>
+                                    <span class="star fr">{{ job.click_num }}</span>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="module greybg">
+            <div class="wp">
+                <h1>企业机构</h1>
+                <div class="module3 eachmod">
+                    <div class="module3_1 left">
+                        <img width="228" height="463" src="{% static 'images/module3_1.jpg' %}"/>
+                        <p class="fisrt_word">名企来袭<br/>权威认证</p>
+                        <a class="more" href="{% url 'jobs:com_list' %}">查看更多机构 ></a>
+                    </div>
+                    <div class="right">
+                        <ul>
+                            {% for org in orgs %}
+                                <li class="{% if forloop.counter|divisibleby:'5' %}five{% endif %}">
+                                    <a href="{% url 'jobs:com_detail' org.id %}">
+                                        <div class="company">
+                                            <img width="184" height="110" src="{{ MEDIA_URL }}{{ org.image }}"/>
+                                            <div class="score">
+                                                <div class="circle">
+                                                    <h2>{{ org.industry.name }}</h2>
+                                                </div>
+                                            </div>
+                                        </div>
+{#                                        <p><span class="key" title="{{ org.name }}">{{ org.name }}</span></p>#}
+                                    </a>
+                                </li>
+                            {% endfor %}
+
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block custom_js %}
+    <script type="text/javascript" src="{% static 'js/index.js' %}"></script>
+{% endblock %}

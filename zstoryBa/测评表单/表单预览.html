@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <title>表单预览 </title>
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="author" content="leipi.org">
+    <link href="./append/bootstrap.css" rel="stylesheet" type="text/css">
+   
+    <link href="./append/site.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" charset="utf-8"
+            src="./append/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" charset="utf-8"
+            src="./append/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8"
+            src="./append/ueditor.all.js"></script>
+    <script type="text/javascript" charset="utf-8"
+            src="./append/zh-cn.js"></script>
+</head>
+<body>
+
+
+<div class="container">
+
+    <p style="text-align: center;"><br></p>
+    <p style="text-align: center;"><span style="font-size: 24px;">贝睿金融职业竞争力测评</span></p>
+    <p><span style="font-size: 24px;"></span></p>
+    <table class="table table-bordered">
+        <tbody>
+        <tr class="firstRow">
+            <td width="106" valign="top" style="word-break: break-all;">姓名</td>
+            <td width="96" valign="top" style="word-break: break-all;">性别</td>
+            <td width="116" valign="top" style="word-break: break-all;">生日(eg：1990-01-01)</td>
+            <td width="106" valign="top" style="word-break: break-all;">籍贯</td>
+            <td width="106" valign="top" style="word-break: break-all;">政治背景</td>
+            <td width="106" valign="top" style="word-break: break-all;">联系方式<br></td>
+        </tr>
+        <tr>
+            <td width="96" valign="top"><input type="text" value="" name="data_1"
+                                                style="text-align: left; width: 80px;"></td>
+            <td width="106" valign="top"><span leipiplugins="select">
+			<select name="data_1" title="sex" leipiplugins="select" size="1" orgwidth="50" style="width: 50px;">
+			<option value="男" selected="selected">男</option>
+			<option value="女">女</option>
+			</select>&nbsp;&nbsp;
+			</span>
+            </td>
+            <td width="106" valign="top"><input type="text" value="" name="data_3"
+                                                style="text-align: left; width: 80px;"></td>
+                                                
+            <td width="106" valign="top"><span leipiplugins="select">
+			<select name="data_2" title="sex" leipiplugins="select" size="1" orgwidth="50" style="width: 110px;">
+			<option value="1" selected="selected">直辖市或省会城市</option>
+			<option value="2">非以上</option>
+			</select>&nbsp;&nbsp;
+			</span>
+            </td>
+                                                
+             <td width="106" valign="top"><span leipiplugins="select">
+			<select name="data_3" title="political" leipiplugins="select" size="1" orgwidth="50" style="width: 90px;">
+			<option value="1" selected="selected">党员</option>
+			<option value="2">民主党派</option>
+			<option value="3">团员</option>
+			<option value="4">群众</option>
+			</select>&nbsp;&nbsp;
+			</span>
+            </td>
+            
+            <td width="106" valign="top"><input type="text" value="" name="data_6"
+                                                style="text-align: left; width: 80px;"></td>
+        </tr>
+        </tbody>
+    </table>
+    <p><span style="font-size: 24px;"></span>
+       
+    </p>
+    <table id="data_7_table" cellspacing="0" class="table table-bordered table-condensed" style="width: 100%;">
+        <thead>
+        <tr>
+            <th colspan="6">
+                教育背景           
+            </th>
+        </tr>
+        <tr>
+        </tr>
+        <tr>
+            <th>开始日期(eg 2005-01-01)</th>
+            <th>结束日期</th>
+            <th>学校名称</th>
+            <th>专业名称</th>
+            <th>学位(本科/硕士/博士)</th>
+ 
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="template">
+            <td><input class="input-medium" type="text" name="data_7[0][]" value=""></td>
+            <td><input class="input-medium" type="text" name="data_7[1][]" value=""></td>
+            <td><input class="input-medium" type="text" name="data_7[2][]" value=""></td>
+            <td><input class="input-medium" type="text" name="data_7[3][]" value=""></td>
+            <td><input class="input-medium" type="text" name="data_7[4][]" value=""></td>
+        </tr>
+        <tr class="">
+            <td><input class="input-medium" type="text" name="data_7[0][]" value=""></td>
+            <td><input class="input-medium" type="text" name="data_7[1][]" value=""></td>
+            <td><input class="input-medium" type="text" name="data_7[2][]" value=""></td>
+            <td><input class="input-medium" type="text" name="data_7[3][]" value=""></td>
+            <td><input class="input-medium" type="text" name="data_7[4][]" value=""></td> 
+        </tr>
+        <tr class="">
+            <td><input class="input-medium" type="text" name="data_7[0][]" value=""></td>
+            <td><input class="input-medium" type="text" name="data_7[1][]" value=""></td>
+            <td><input class="input-medium" type="text" name="data_7[2][]" value=""></td>
+            <td><input class="input-medium" type="text" name="data_7[3][]" value=""></td>
+            <td><input class="input-medium" type="text" name="data_7[4][]" value=""></td>
+        </tr>
+        </tbody>
+    </table>
+    <p></p>
+	
+	
+	   <script>
+            function tbAddRow(dname) {
+                var sTbid = dname + "_table";
+                $("#" + sTbid + " .template")
+                //连同事件一起复制    
+                    .clone(true)
+                    //去除模板标记    
+                    .removeClass("template")
+                    //修改内部元素 
+                    .find(".delrow").show().end()
+                    .find("input").val("").end()
+                    .find("textarea").val("").end()
+                //插入表格    
+                    .appendTo($("#" + sTbid));
+            }
+
+            //统计
+            function sum_total(dname, e) {
+
+                var tsum = 0;
+                $('input[name="' + dname + '[]"]').each(function () {
+                    var t = parseFloat($(this).val());
+                    if (!t) t = 0;
+                    if (t) tsum += t;
+                    $(this).val(t);
+                });
+                $('input[name="' + dname + '[total]"]').val(tsum);
+
+            }
+
+            /*删除tr*/
+            function fnDeleteRow(obj) {
+                var sTbid = "data_22_table";
+                var oTable = document.getElementById(sTbid);
+                while (obj.tagName != "TR") {
+                    obj = obj.parentNode;
+                }
+                oTable.deleteRow(obj.rowIndex);
+            }
+        </script>
+     
+    <table id="data_22_table" cellspacing="0" class="table table-bordered table-condensed" style="width: 100%;">
+        <thead>
+        <tr>
+            <th colspan="6">
+                实习经历
+                <span class="pull-right">
+                <button class="btn btn-small btn-success" type="button"
+                 onclick="tbAddRow(&#39;data_22&#39;)">添加一行</button>
+                </span>
+            </th>
+        </tr>
+        <tr>
+        </tr>
+        <tr>
+            <th>开始日期</th>
+            <th>结束日期</th>
+            <th>单位类别</th>
+            <th>单位名称</th>
+            <th>部门名称</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="template">
+            <td><input class="input-medium" type="text" name="data_22[0][]" value=""></td>
+            <td><input class="input-medium" type="text" name="data_22[1][]" value=""></td>
+            <td><input class="input-medium" type="text" name="data_22[2][]" value=""></td>
+            <td><input class="input-medium" type="text" name="data_22[3][]" value=""></td>
+            <td><input class="input-medium" type="text" name="data_22[4][]" value=""></td>
+            <td><a href="javascript:void(0);" onclick="fnDeleteRow(this)" class="delrow hide">删除</a></td>
+        </tr>
+        </tbody>
+    </table>
+    <p><br></p>
+	
+	<div  >
+ 
+    <p><b>专业证书：</b></p>
+    <p><input type="checkbox" name="data_8" value="CPA全科 / CFA三级">CPA全科 / CFA三级&nbsp;&nbsp;&nbsp;
+	<input type="checkbox" name="data_9" value="CPA部分 / CFA 1-2级 / FRM">CPA部分/ CFA 1-2级 / FRM&nbsp;&nbsp;&nbsp;
+		<input type="checkbox" name="data_10" value="司法考试">司法考试&nbsp;&nbsp;&nbsp;
+		<input type="checkbox" name="data_11" value="从业资格（证券/基金/银行）">从业资格（证券/基金/银行）&nbsp;&nbsp;&nbsp;
+		<input type="checkbox" name="data_12" value="无">无&nbsp;</p>
+    <p><br></p>
+    <p><b>语言/计算机类：</b><br></p>
+    <p><input type="checkbox" name="data_13" value="英语四六级">英语四六级&nbsp;&nbsp;&nbsp;
+	<input type="checkbox" name="data_14" value="托福 / 雅思">托福 / 雅思&nbsp	;&nbsp;&nbsp;																 
+	<input type="checkbox" name="data_15" value="托业">托业&nbsp;&nbsp;&nbsp;
+	<input type="checkbox" name="data_16" value="Office">Office&nbsp;&nbsp;&nbsp;
+	<input type="checkbox" name="data_17" value="Python / Java等高级语言">Python / Java等高级语言&nbsp;
+	</p>
+    <p><br></p>
+    <p><b>奖学金及其它：</b><br></p>
+    <p><input type="checkbox" name="data_18" value="国家级奖学金/学生干部/大赛获奖">国家级奖学金/学生干部/大赛获奖&nbsp;&nbsp;&nbsp;
+	<input type="checkbox" name="data_19" value="省部级奖学金/学生干部/大赛获奖">省部级奖学金/学生干部/大赛获奖&nbsp;&nbsp;&nbsp;
+	<input type="checkbox" name="data_20" value="校级奖学金/学生干部/大赛获奖">校级奖学金/学生干部/大赛获奖&nbsp;&nbsp;&nbsp;
+	<input type="checkbox" name="data_21" value="无或其他">无或其他&nbsp;
+    </p>
+    <p><br></p>
+   
+    <p><b>自我评价模块</b></p>
+    <p>想要的：</p>
+    <p><input type="checkbox" name="data_23" value="多金，能吃苦">多金，能吃苦&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="checkbox" name="data_24" value="没压力的">没压力的&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="checkbox" name="data_25" value="舒服的">舒服的&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="checkbox" name="data_26" value="无">无&nbsp;
+    </p>
+    <p><br></p>
+    <p>职业偏好：</p>
+    <p><input type="checkbox" name="data_27" value="投行/并购">投行/并购&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="checkbox" name="data_28" value="销售/交易">销售/交易&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="checkbox" name="data_29" value="投研">投研&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="checkbox" name="data_30" value="投资">投资&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="checkbox" name="data_31" value="合规/风险管理">合规/风险管理&nbsp;&nbsp;&nbsp;
+	<input type="checkbox" name="data_32" value="支持部门">支持部门&nbsp;</p>
+    <p><br></p>
+	
+	<p>性格描述：</p>
+    <p><input type="checkbox" name="data_33" value="投行/并购">勤奋的&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="checkbox" name="data_34" value="销售/交易">交际花&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="checkbox" name="data_35" value="投研">女王/王子范&nbsp;&nbsp;&nbsp;&nbsp;
+	 
+    <p><br></p>
+    </div>
+	
+	  <button class="btn btn-small btn-success" type="submit" onclick="" style="display:block;margin:0 auto">提交</button>
+</div><!--end container-->
+
+
+<block name="footer_js">
+    <script type="text/javascript">
+        var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+        document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F1e6fd3a46a5046661159c6bf55aad1cf' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script src="./append/h.js" type="text/javascript"></script>
+
+
+</block>
+</body>
+</html>

@@ -1,0 +1,51 @@
+{% extends 'company/company_base.html' %}
+{% block page_path %}机构首页{% endblock %}
+{% block title %}机构首页 | 贝睿求职{% endblock %}
+{% load staticfiles %}
+{% block right_form %}
+    <div class="right companycenter layout grouping">
+        <div class="head">
+            <h1>公司简介</h1>
+            {#			<a class="green fr more" href="org-detail-course.html">查看更多  >  </a>#}
+        </div>
+        <div class="brief group_list">
+
+            {% for ele in introduction %}
+
+                <p style="font-size:14px">&nbsp;&nbsp;&nbsp;&nbsp;{{ ele }}</p>
+
+
+
+                {#                <div class="module1_5 box">#}
+{#                    <a href="{% url 'course:course_detail' course.id %}"><img width="214"#}
+{#                                                                              src="{{ MEDIA_URL }}{{ course.image }}"/></a>#}
+{#                    <div class="des">#}
+{#                        <a href="{% url 'course:course_detail' course.id %}"><h2>{{ course.name }}</h2></a>#}
+{#                        <span class="fl">课时：<i class="key">{{ course.learn_times }}</i></span>#}
+{#                        <span class="fr">参加人数：{{ course.students }}</span>#}
+{#                    </div>#}
+{#                    <div class="bottom">#}
+{#                        <span class="fl">{{ course.course_org.name }}</span>#}
+{#                        <span class="star fr  notlogin#}
+{#                            " data-favid="13" data-fav-type="4">#}
+{#                             {{ course.fav_nums }}#}
+{#                        </span>#}
+{#                    </div>#}
+{#                </div>#}
+            {% endfor %}
+        </div>
+    </div>
+
+{#    <div class="right companycenter layout">#}
+{#        <div class="head">#}
+{#            <h1>机构介绍</h1>#}
+            {#        <a class="green fr more" href="org-detail-desc.html">查看更多  >  </a>#}
+{#        </div>#}
+{##}
+{#        {% for ele in org_desc %}#}
+{#            <h3 >&nbsp;&nbsp; {{ ele }}</h3>#}
+{#        {% endfor %}#}
+{##}
+        {#        <div class="cont">&nbsp;&nbsp; {{ course_org.desc }}</div>#}
+{#    </div>#}
+{% endblock %}
