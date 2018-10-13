@@ -48,7 +48,7 @@ class ArticleListView(View):
 
 # 课程详情处理view
 
-class CourseDetailView(View):
+class ArticleDetailView(View):
     def get(self, request, course_id):
         # 此处的id为表默认为我们添加的值。
         course = Course.objects.get(id=int(course_id))

@@ -14,13 +14,31 @@ class Article(models.Model):
         ("zj", u"中级"),
         ("gj", u"高级")
     )
-    course_org = models.ForeignKey(CourseOrg,on_delete=models.CASCADE, verbose_name=u"所属机构",null=True,blank=True)
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE,verbose_name=u"讲师", null=True, blank=True)
+    title = models.CharField(max_length=50, verbose_name=u"标题")
+    author = models.CharField(max_length=50, verbose_name=u"作者")
+    content = UEditorField(verbose_name=u"内容", width=600, height=300, blank=True, null=True,
+                           imagePath="article/ueditor/", filePath="article/ueditor/", default='')
+    image = models.ImageField(upload_to="article/%Y/%m", verbose_name=u"封面图", max_length=100, blank=True, null=True)
+    abstract = models.CharField(max_length=300, default=u"", verbose_name=u"摘要", blank=True, null=True)
+    # 保存点击量，点进页面就算
+    click_nums = models.IntegerField(default=0, verbose_name=u"点击数")
+    like_nums = models.IntegerField(default=0, verbose_name=u"点赞数")
+    category = models.CharField(max_length=20, verbose_name=u"文章类别", default=u"", blank=True, null=True)
+    tag = models.CharField(max_length=15, verbose_name=u"文章标签", default=u"", blank=True, null=True)
+    add_time = models.DateTimeField(default=datetime.now, verbose_name=u"添加时间")
+    update_time = models.DateTimeField(default=datetime.now, verbose_name=u"更新时间")
+
+
+
+
+    course_org = models.ForeignKey(CourseOrg, on_delete=models.CASCADE, verbose_name=u"所属机构", null=True, blank=True)
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, verbose_name=u"讲师", null=True, blank=True)
     name = models.CharField(max_length=50, verbose_name=u"课程名")
     desc = models.CharField(max_length=300, verbose_name=u"课程描述")
     # TextField允许我们不输入长度。可以输入到无限大。暂时定义为TextFiled，之后更新为富文本
     # 修改imagepath,不能传y m 进来，不能加斜杠是一个相对路径，相对于setting中配置的mediaroot
-    detail = UEditorField(verbose_name=u"课程详情", width=600, height=300, imagePath="courses/ueditor/", filePath="courses/ueditor/",default='')
+    detail = UEditorField(verbose_name=u"课程详情", width=600, height=300, imagePath="courses/ueditor/",
+                          filePath="courses/ueditor/", default='')
     is_banner = models.BooleanField(default=False, verbose_name=u"是否轮播")
     degree = models.CharField(choices=DEGREE_CHOICES, max_length=2, verbose_name=u"难度")
     # 使用分钟做后台记录(存储最小单位)前台转换
@@ -72,7 +90,7 @@ class Lesson(models.Model):
         verbose_name_plural = verbose_name
 
     def __str__(self):
-        return '《{0}》课程的章节 >> {1}'.format(self.course,self.name)
+        return '《{0}》课程的章节 >> {1}'.format(self.course, self.name)
 
 
 # 每章视频
@@ -95,7 +113,7 @@ class Video(models.Model):
         verbose_name_plural = verbose_name
 
     def __str__(self):
-        return '{0}章节的视频 >> {1}'.format(self.lesson,self.name)
+        return '{0}章节的视频 >> {1}'.format(self.lesson, self.name)
 
 
 # 课程资源
@@ -117,4 +135,4 @@ class CourseResource(models.Model):
         verbose_name_plural = verbose_name
 
     def __str__(self):
-        return '《{0}》课程的资源: {1}'.format(self.course,self.name)
+        return '《{0}》课程的资源: {1}'.format(self.course, self.name)
