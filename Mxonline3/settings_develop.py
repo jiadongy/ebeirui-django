@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     'captcha',
     'pure_pagination',
     'DjangoUeditor',
-
     'jobs',
     'users',
     'courses',
