@@ -171,8 +171,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 CORS_ORIGIN_WHITELIST = (
     '127.0.0.1:8080',
     '127.0.0.1:8000',
+    '127.0.0.1:8082',
     'localhost:8080',
-    'localhost:8000'
+    'localhost:8000',
+    'localhost:8082',
 )
 
 APPEND_SLASH = True
