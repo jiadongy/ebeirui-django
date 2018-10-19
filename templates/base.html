@@ -126,6 +126,11 @@
                                 class="active"
                             {% endifequal %}><a href="{% url 'courses:list' %}">贝睿课程</a>
                             </li>
+
+                        <li {% ifequal  '/article/list' request.path|slice:":12" %}
+                                class="active"
+                            {% endifequal %}><a href="{% url 'article:list' %}">贝睿文章</a>
+                            </li>
                         </ul>
                     </div>
                 </div>

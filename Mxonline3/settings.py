@@ -160,7 +160,7 @@ EMAIL_PORT = 465  # aliyun does not support smtp service with port 25, use ssl i
 EMAIL_HOST_USER = "ebeirui@163.com"
 EMAIL_HOST_PASSWORD = "ebeirui2018"
 EMAIL_FROM = "ebeirui@163.com"
-EMAIL_USE_SSL = True
+EMAIL_USE_SSL = True  # https://bbs.aliyun.com/read/570150.html?spm=a2c4e.11155515.0.0.2d6859ce92PD2q
 
 # 设置我们上传文件的路径
 
