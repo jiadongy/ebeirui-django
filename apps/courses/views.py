@@ -10,7 +10,8 @@ from pure_pagination import Paginator, PageNotAnInteger
 
 
 class CourseListView(View):
-    def get(self, request):
+    @staticmethod
+    def get(request):
         all_course = Course.objects.all()
         # 热门课程推荐
         hot_courses = Course.objects.all().order_by("-students")[:3]
@@ -49,7 +50,8 @@ class CourseListView(View):
 # 课程详情处理view
 
 class CourseDetailView(View):
-    def get(self, request, course_id):
+    @staticmethod
+    def get(request, course_id):
         # 此处的id为表默认为我们添加的值。
         course = Course.objects.get(id=int(course_id))
         # 增加课程点击数
@@ -82,12 +84,12 @@ class CourseDetailView(View):
 
 
 # 处理课程章节信息页面的view
-
 class CourseInfoView(LoginRequiredMixin, View):
     login_url = '/login/'
     redirect_field_name = 'next'
 
-    def get(self, request, course_id):
+    @staticmethod
+    def get(request, course_id):
         # 此处的id为表默认为我们添加的值。
         course = Course.objects.get(id=int(course_id))
 
@@ -122,7 +124,8 @@ class CommentsView(LoginRequiredMixin, View):
     login_url = '/login/'
     redirect_field_name = 'next'
 
-    def get(self, request, course_id):
+    @staticmethod
+    def get(request, course_id):
         # 此处的id为表默认为我们添加的值。
         course = Course.objects.get(id=int(course_id))
         all_resources = CourseResource.objects.filter(course=course)
@@ -157,7 +160,8 @@ class CommentsView(LoginRequiredMixin, View):
 
 # ajax方式添加评论
 class AddCommentsView(View):
-    def post(self, request):
+    @staticmethod
+    def post(request):
         if not request.user.is_authenticated:
             # 未登录时返回json提示未登录，跳转到登录页面是在ajax中做的
             return HttpResponse('{"status":"fail", "msg":"用户未登录"}', content_type='application/json')
@@ -182,7 +186,8 @@ class VideoPlayView(LoginRequiredMixin, View):
     login_url = '/login/'
     redirect_field_name = 'next'
 
-    def get(self, request, video_id):
+    @staticmethod
+    def get(request, video_id):
         # 此处的id为表默认为我们添加的值。
         video = Video.objects.get(id=int(video_id))
         # 找到对应的course

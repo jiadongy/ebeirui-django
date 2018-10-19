@@ -11,27 +11,29 @@ from evaluation.models import Evaluation
 
 
 class XGIndexView(View):
-    def get(self, request):
+    @staticmethod
+    def get(request):
         return render(request, "evaluation/xg.html", {
         })
 
 
 class XGDataView(View):
 
-    def post(self, request):
+    @staticmethod
+    def post(request):
         email = request.POST.get("email", "")
         answers = request.POST.get("answers", [])
 
         answer_list = answers.split("#")[:-1]
 
-        green, yellow, blue, red = 0,0,0,0
+        green, yellow, blue, red = 0, 0, 0, 0
 
         for i in range(len(answer_list)):
             xg_instance = Evaluation()
             xg_instance.exam_index = 1
             xg_instance.email = email
 
-            xg_instance.question_index = i+1
+            xg_instance.question_index = i + 1
             xg_instance.answer_index = answer_list[i]
             xg_instance.date = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             xg_instance.save()
@@ -55,7 +57,7 @@ class XGDataView(View):
                 else:
                     green += 1
 
-        score_list = [green,yellow,blue,red]
+        score_list = [green, yellow, blue, red]
         max_score = max(score_list)
         max_index = score_list.index(max(score_list))
 
@@ -92,9 +94,8 @@ class XGDataView(View):
 
             return render(request, "evaluation/xg-result.html", {
 
-                "result_colour":result_colour,
-                "result_tags":result_tags,
-                "result_comment":result_comment.splitlines(),
-                "result_br":result_br
+                "result_colour": result_colour,
+                "result_tags": result_tags,
+                "result_comment": result_comment.splitlines(),
+                "result_br": result_br
             })
-

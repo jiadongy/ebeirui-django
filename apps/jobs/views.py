@@ -11,10 +11,10 @@ from .models import Jobs, IndustryDict, Recruiter, CompanyComments
 
 
 class JobsView(View):
-    def get(self, request):
+    @staticmethod
+    def get(request):
         # 查找到所有的职位
         all_jobs = Jobs.objects.all()
-
 
         # 热门机构,如果不加负号会是有小到大。
         # hot_orgs = all_orgs.order_by("-click_nums")[:3]
@@ -84,7 +84,8 @@ class JobsView(View):
 
 # 详情页面
 class JobDetailView(View):
-    def get(self, request, job_id):
+    @staticmethod
+    def get(request, job_id):
         job = Jobs.objects.get(id=int(job_id))
         job.click_num += 1
         job.save()
@@ -99,7 +100,8 @@ class JobDetailView(View):
 
 # 公司列表
 class CompanyView(View):
-    def get(self, request):
+    @staticmethod
+    def get(request):
 
         all_company = Recruiter.objects.all()
 
@@ -154,7 +156,8 @@ class CompanyView(View):
 
 # 公司详情页面
 class CompanyDetailView(View):
-    def get(self, request, company_id):
+    @staticmethod
+    def get(request, company_id):
 
         company = Recruiter.objects.get(id=int(company_id))
         company.click_num += 1
@@ -173,7 +176,7 @@ class CompanyDetailView(View):
         return render(request, "company/company-comment.html", {
 
             "company": company,
-            "all_comments":all_comments,
+            "all_comments": all_comments,
             "introduction": company.introduction.splitlines(),
             # "jobs": jobs,
         })
@@ -181,7 +184,8 @@ class CompanyDetailView(View):
 
 # ajax方式添加评论
 class AddOrgCommentsView(View):
-    def post(self, request):
+    @staticmethod
+    def post(request):
         if not request.user.is_authenticated:
             # 未登录时返回json提示未登录，跳转到登录页面是在ajax中做的
             return HttpResponse('{"status":"fail", "msg":"用户未登录"}', content_type='application/json')

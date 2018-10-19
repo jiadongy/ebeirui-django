@@ -1,12 +1,13 @@
 # encoding: utf-8
 
-from users.views import UserInfoView, UploadImageView, SendEmailCodeView, UpdateEmailView, UpdatePwdView, MyCourseView, \
-    MyFavOrgView, MyFavTeacherView, MyFavCourseView, MyMessageView
+from users.views import UserInfoView, UploadImageView, SendEmailCodeView, UpdateEmailView, UpdatePwdView, MyCourseView, MyFavOrgView, \
+    MyFavTeacherView, MyFavCourseView, MyMessageView
 
 __author__ = 'mtianyan'
 __date__ = '2018/1/14 0014 06:52'
 
 from django.urls import path
+
 app_name = "users"
 urlpatterns = [
     # 用户信息
@@ -16,10 +17,7 @@ urlpatterns = [
     # 用户个人中心修改密码
     path('update/pwd/', UpdatePwdView.as_view(), name="update_pwd"),
     # 专用于发送验证码的
-    path(
-        'sendemail_code/',
-        SendEmailCodeView.as_view(),
-        name="sendemail_code"),
+    path('send_email_code/', SendEmailCodeView.as_view(), name="send_email_code"),
     path('update_email/', UpdateEmailView.as_view(), name="update_email"),
     # 用户中心我的课程
     path('mycourse/', MyCourseView.as_view(), name="mycourse"),

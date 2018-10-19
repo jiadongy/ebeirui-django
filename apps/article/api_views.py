@@ -1,15 +1,21 @@
+import json
+
+from django.core.paginator import PageNotAnInteger
 from django.db.models import Q
-from django.shortcuts import render
-# Create your views here.
-from django.views.generic.base import View
-from pure_pagination import Paginator, PageNotAnInteger
+from pure_pagination import Paginator
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from article.models import Article
 
 
-class ArticleListView(View):
+class ArticleListJsonView(APIView):
+
     @staticmethod
     def get(request):
+        print(request.data)
+
         all_articles = Article.objects.all()
         # 热门文章推荐
         hot_articles = Article.objects.all().order_by("-click_nums")[:3]
@@ -21,6 +27,7 @@ class ArticleListView(View):
             all_articles = all_articles.filter(
                 Q(title__icontains=search_keywords) | Q(abstract__icontains=search_keywords)
                 | Q(author__icontains=search_keywords))
+
         # 对课程进行分页
         # 尝试获取前台get请求传递过来的page参数
         # 如果是不合法的配置参数默认返回第一页
@@ -37,21 +44,25 @@ class ArticleListView(View):
             page = request.GET.get('page', 1)
         except PageNotAnInteger:
             page = 1
-        # 这里指从allorg中取五个出来，每页显示5个
+
+        # 这里指从allorg中取五个出来，每页显示10个
         p = Paginator(all_articles, 10, request=request)
         articles = p.page(page)
-        return render(request, "article-list.html", {
-            "all_articles": articles,
-            "sort": sort,
-            "hot_articles": hot_articles,
-            "search_keywords": search_keywords
-        })
+
+        results = {'articles': articles,
+                   'page': page,
+                   'hot_articles': hot_articles}
+
+        return Response(json.dumps(results), status=status.HTTP_200_OK)
 
 
-# 文章详情view
-class ArticleDetailView(View):
+class ArticleDetailJsonView(APIView):
+
     @staticmethod
     def get(request, article_id):
+        print(request.data)
+        print(article_id)
+
         # 此处的id为表默认为我们添加的值。
         article = Article.objects.get(id=int(article_id))
         # 增加课程点击数
@@ -73,10 +84,11 @@ class ArticleDetailView(View):
             relate_articles = Article.objects.filter(tag=tag)[1:2]
         else:
             relate_articles = []
-        return render(request, "article-detail.html", {
-            "article": article,
-            "relate_article": relate_articles,
-            "has_fav_article": has_fav_article,
-        })
 
+        results = {
+            'article': article,
+            'is_fav': has_fav_article,
+            'relate_articles': relate_articles
+        }
 
+        return Response(json.dumps(results), status=status.HTTP_200_OK)

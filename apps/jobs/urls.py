@@ -21,4 +21,4 @@ urlpatterns = [
     # 添加公司评论
     path('add_comment/', AddOrgCommentsView.as_view(), name="add_org_comment"),
 
-  ]
+]

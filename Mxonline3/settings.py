@@ -156,7 +156,7 @@ STATICFILES_DIRS = [
 # 发送邮件的setting设置
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = "smtp.163.com"
-EMAIL_PORT = 465 #aliyun does not support smtp service with port 25, use ssl instead
+EMAIL_PORT = 465  # aliyun does not support smtp service with port 25, use ssl instead
 EMAIL_HOST_USER = "ebeirui@163.com"
 EMAIL_HOST_PASSWORD = "ebeirui2018"
 EMAIL_FROM = "ebeirui@163.com"

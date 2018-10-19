@@ -14,8 +14,7 @@ urlpatterns = [
 
     # path('get_data/', XGDataView.as_view(), name="xg_data"),
 
-
     # detail页面,取纯数字
     # re_path('detail/(?P<job_id>\d+)/', JobDetailView.as_view(), name="job_detail"),
 
-  ]
+]

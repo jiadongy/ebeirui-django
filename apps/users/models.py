@@ -47,7 +47,7 @@ class UserProfile(AbstractUser):
     # 获取用户未读消息的数量
     def unread_nums(self):
         from operation.models import UserMessage
-        return  UserMessage.objects.filter(has_read=False, user=self.id).count()
+        return UserMessage.objects.filter(has_read=False, user=self.id).count()
 
 
 # 邮箱验证码model
@@ -70,7 +70,6 @@ class EmailVerifyRecord(models.Model):
         verbose_name = "邮箱验证码"
         verbose_name_plural = verbose_name
 
-
     # 重载str方法使后台不再直接显示object
     def __str__(self):
         return '{0}({1})'.format(self.code, self.email)
@@ -91,7 +90,6 @@ class Banner(models.Model):
     class Meta:
         verbose_name = u"轮播图"
         verbose_name_plural = verbose_name
-
 
     # 重载__str__方法使后台不再直接显示object
     def __str__(self):

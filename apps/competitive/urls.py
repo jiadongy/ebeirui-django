@@ -1,14 +1,15 @@
 # encoding: utf-8
 
-from competitive import views
 from django.urls import path
+
+from competitive.api_views import CareerCompetitivenessJsonView
 
 app_name = "competitive"
 
 urlpatterns = [
     # path("calculate_competitive/",CareerCompetitivenessView.as_view())
 
-    path("query/", views.CareerCompetitivenessView.as_view())
+    path("query/", CareerCompetitivenessJsonView.as_view())
     # 性格测试
     # path('xg/', XGIndexView.as_view(), name="xg_index"),
 
