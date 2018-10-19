@@ -68,6 +68,7 @@ urlpatterns = [
     # 新增地址
     path("jobs/", include('jobs.urls', namespace="jobs")),
     path("evaluation/", include('evaluation.urls', namespace="evaluation")),
-    path("competitive/", include("competitive.urls", namespace="competitive"))
+    path("competitive/", include("competitive.urls", namespace="competitive")),
+    path("article/", include('article.urls', namespace="article")),
 
 ]

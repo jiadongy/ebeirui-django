@@ -5,9 +5,7 @@ __date__ = '2018/1/11 0011 03:57'
 # encoding: utf-8
 from random import Random
 
-__author__ = 'mtianyan'
-__date__ = '2018/1/10 0010 20:47'
-from  users.models import EmailVerifyRecord
+from users.models import EmailVerifyRecord
 # 导入Django自带的邮件模块
 from django.core.mail import EmailMessage
 # 导入setting中发送邮件的配置
@@ -29,7 +27,7 @@ def random_str(random_length=8):
 
 
 # 发送注册邮件
-def send_register_eamil(email, send_type="register"):
+def send_register_email(email, send_type="register"):
     # 发送之前先保存到数据库，到时候查询链接是否存在
     # 实例化一个EmailVerifyRecord对象
     email_record = EmailVerifyRecord()
@@ -52,11 +50,11 @@ def send_register_eamil(email, send_type="register"):
         email_title = "贝睿求职 注册激活链接"
 
         email_body = loader.render_to_string(
-                "email_register.html",  # 需要渲染的html模板
-                {
-                    "active_code": code  # 参数
-                }
-            )
+            "email_register.html",  # 需要渲染的html模板
+            {
+                "active_code": code  # 参数
+            }
+        )
 
         msg = EmailMessage(email_title, email_body, EMAIL_FROM, [email])
         msg.content_subtype = "html"
@@ -66,7 +64,7 @@ def send_register_eamil(email, send_type="register"):
 
         # 如果发送成功
         if send_status:
-                pass
+            pass
     elif send_type == "forget":
         email_title = "贝睿求职 找回密码链接"
         email_body = loader.render_to_string(

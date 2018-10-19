@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'captcha',
     'pure_pagination',
     'DjangoUeditor',
+    'article',
     'jobs',
     'users',
     'courses',
@@ -104,7 +105,8 @@ DATABASES = {
         'NAME': 'bronline',
         'USER': 'root',
         'PASSWORD': 'Abcd1234!',  # sDtbqsJ(&7!123
-        'HOST': '127.0.0.1'
+        'HOST': '127.0.0.1',
+        'OPTIONS': {'charset': 'utf8mb4'},
 
     }
 }
@@ -155,11 +157,11 @@ STATICFILES_DIRS = [
 # 发送邮件的setting设置
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = "smtp.163.com"
-EMAIL_PORT = 25
-EMAIL_HOST_USER = "wongzhaoli@163.com"
-EMAIL_HOST_PASSWORD = "518519188JErry"
-EMAIL_USE_TLS = True
-EMAIL_FROM = "wongzhaoli@163.com"
+EMAIL_PORT = 465
+EMAIL_HOST_USER = "ebeirui@163.com"
+EMAIL_HOST_PASSWORD = "ebeirui2018"
+EMAIL_FROM = "ebeirui@163.com"
+EMAIL_USE_SSL = True
 
 # 设置我们上传文件的路径
 

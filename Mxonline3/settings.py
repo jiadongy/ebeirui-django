@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 import os
 import sys
 
+print("I'm in production environment")
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
@@ -46,7 +48,7 @@ INSTALLED_APPS = [
     'captcha',
     'pure_pagination',
     'DjangoUeditor',
-
+    'article',
     'jobs',
     'users',
     'courses',
@@ -102,7 +104,8 @@ DATABASES = {
         'NAME': 'bronline',
         'USER': 'root',
         'PASSWORD': 'sDtbqsJ(&7!123',  # Abcd1234!
-        'HOST': '127.0.0.1'
+        'HOST': '127.0.0.1',
+        'OPTIONS': {'charset': 'utf8mb4'},
 
     }
 }
@@ -153,11 +156,11 @@ STATICFILES_DIRS = [
 # 发送邮件的setting设置
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = "smtp.163.com"
-EMAIL_PORT = 25
-EMAIL_HOST_USER = "wongzhaoli@163.com"
-EMAIL_HOST_PASSWORD = "518519188JErry"
-EMAIL_USE_TLS = True
-EMAIL_FROM = "wongzhaoli@163.com"
+EMAIL_PORT = 465 #aliyun does not support smtp service with port 25, use ssl instead
+EMAIL_HOST_USER = "ebeirui@163.com"
+EMAIL_HOST_PASSWORD = "ebeirui2018"
+EMAIL_FROM = "ebeirui@163.com"
+EMAIL_USE_SSL = True
 
 # 设置我们上传文件的路径
 

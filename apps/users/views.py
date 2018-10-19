@@ -1,7 +1,6 @@
 # encoding: utf-8
 import json
 
-from courses.models import Course
 # Django自带的用户验证,login
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.backends import ModelBackend
@@ -15,13 +14,14 @@ from django.shortcuts import render
 from django.urls import reverse
 # 基于类实现需要继承的view
 from django.views.generic.base import View
+from pure_pagination import Paginator, PageNotAnInteger
+
+from courses.models import Course
 from jobs.models import Jobs, Recruiter
 from operation.models import UserCourse, UserFavorite, UserMessage
 from organization.models import CourseOrg, Teacher
-from pure_pagination import Paginator, PageNotAnInteger
 # 发送邮件
-from utils.email_send import send_register_eamil
-
+from utils.email_send import send_register_email
 # form表单验证 & 验证码
 from .forms import LoginForm, RegisterForm, ActiveForm, ForgetForm, ModifyPwdForm, UploadImageForm, UserInfoForm
 from .models import UserProfile, EmailVerifyRecord, Banner
@@ -29,7 +29,8 @@ from .models import UserProfile, EmailVerifyRecord, Banner
 
 # 激活用户的view
 class ActiveUserView(View):
-    def get(self, request, active_code):
+    @staticmethod
+    def get(request, active_code):
         # 查询邮箱验证记录是否存在
         all_record = EmailVerifyRecord.objects.filter(code=active_code)
         # 如果不为空也就是有用户
@@ -43,7 +44,10 @@ class ActiveUserView(View):
                 user.is_active = True
                 user.save()
                 # 激活成功跳转到登录页面
-                return render(request, "login.html", )
+                return render(request, "login.html", {
+                    "active_success": True,
+                    "email": email
+                })
         # 自己瞎输的验证码
         else:
             return render(
@@ -54,14 +58,16 @@ class ActiveUserView(View):
 # 注册功能的view
 class RegisterView(View):
     # get方法直接返回页面
-    def get(self, request):
+    @staticmethod
+    def get(request):
         # 添加验证码
         register_form = RegisterForm()
         return render(
             request, "register.html", {
                 'register_form': register_form})
 
-    def post(self, request):
+    @staticmethod
+    def post(request):
         # 实例化form
         register_form = RegisterForm(request.POST)
         if register_form.is_valid():
@@ -70,8 +76,7 @@ class RegisterView(View):
             # 用户查重
             if UserProfile.objects.filter(email=user_name):
                 return render(
-                    request, "register.html", {
-                        "register_form": register_form, "msg": "用户已存在"})
+                    request, "register.html", {"register_form": register_form, "msg": "用户已存在"})
             pass_word = request.POST.get("password", "")
 
             # 实例化一个user_profile对象，将前台值存入
@@ -92,10 +97,13 @@ class RegisterView(View):
             user_message.message = "欢迎注册贝睿求职! --系统自动消息"
             user_message.save()
             # 发送注册激活邮件
-            send_register_eamil(user_name, "register")
+            send_register_email(user_name, "register")
 
             # 跳转到登录页面
-            return render(request, "login.html", )
+            return render(request, "login.html", {
+                "register_success": True,
+                "email": user_name
+            })
         # 注册邮箱form验证失败
         else:
             return render(
@@ -105,8 +113,6 @@ class RegisterView(View):
 
 # 实现用户名邮箱均可登录
 # 继承ModelBackend类，因为它有方法authenticate，可点进源码查看
-
-
 class CustomBackend(ModelBackend):
     def authenticate(self, username=None, password=None, **kwargs):
         try:
@@ -123,7 +129,8 @@ class CustomBackend(ModelBackend):
 
 
 class LogoutView(View):
-    def get(self, request):
+    @staticmethod
+    def get(request):
         # django自带的logout
         logout(request)
         # 重定向到首页,
@@ -132,7 +139,8 @@ class LogoutView(View):
 
 class LoginView(View):
     # 直接调用get方法免去判断
-    def get(self, request):
+    @staticmethod
+    def get(request):
         # render就是渲染html返回用户
         # render三变量: request 模板名称 一个字典写明传给前端的值
         redirect_url = request.GET.get('next', '')
@@ -140,7 +148,8 @@ class LoginView(View):
             "redirect_url": redirect_url
         })
 
-    def post(self, request):
+    @staticmethod
+    def post(request):
         # 类实例化需要一个字典参数dict:request.POST就是一个QueryDict所以直接传入
         # POST中的usernamepassword，会对应到form中
         login_form = LoginForm(request.POST)
@@ -185,9 +194,6 @@ class LoginView(View):
                     "login_form": login_form})
 
 
-# Create your views here
-
-
 # 当我们配置url被这个view处理时，自动传入request对象.
 # 这个是已经被我抛弃的方法型实现，改为类实现
 def user_login(request):
@@ -223,20 +229,21 @@ def user_login(request):
 # 用户忘记密码的处理view
 class ForgetPwdView(View):
     # get方法直接返回页面
-    def get(self, request):
+    @staticmethod
+    def get(request):
         # 给忘记密码页面加上验证码
         active_form = ActiveForm(request.POST)
         return render(request, "forgetpwd.html", {"active_form": active_form})
 
     # post方法实现
-
-    def post(self, request):
+    @staticmethod
+    def post(request):
         forget_form = ForgetForm(request.POST)
         # form验证合法情况下取出email
         if forget_form.is_valid():
             email = request.POST.get("email", "")
             # 发送找回密码邮件
-            send_register_eamil(email, "forget")
+            send_register_email(email, "forget")
             # 发送完毕返回登录页面并显示发送邮件成功。
             return render(request, "login.html", {"msg": "重置密码邮件已发送,请注意查收"})
         # 如果表单验证失败也就是他验证码输错等。
@@ -247,10 +254,9 @@ class ForgetPwdView(View):
 
 
 # 重置密码的view
-
-
 class ResetView(View):
-    def get(self, request, active_code):
+    @staticmethod
+    def get(request, active_code):
         # 查询邮箱验证记录是否存在
         all_record = EmailVerifyRecord.objects.filter(code=active_code)
         # 如果不为空也就是有用户
@@ -270,16 +276,15 @@ class ResetView(View):
 
 
 # 改变密码的view
-
-
 class ModifyPwdView(View):
-    def post(self, request):
+    @staticmethod
+    def post(request):
         modiypwd_form = ModifyPwdForm(request.POST)
         if modiypwd_form.is_valid():
             pwd1 = request.POST.get("password1", "")
             pwd2 = request.POST.get("password2", "")
             active_code = request.POST.get("active_code", "")
-            # email = request.POST.get("email", "")
+            email = request.POST.get("email", "")
             # 如果两次密码不相等，返回错误信息
             if pwd1 != pwd2:
                 return render(
@@ -308,12 +313,14 @@ class UserInfoView(LoginRequiredMixin, View):
     login_url = '/login/'
     redirect_field_name = 'next'
 
-    def get(self, request):
+    @staticmethod
+    def get(request):
         return render(request, "usercenter-info.html", {
 
         })
 
-    def post(self, request):
+    @staticmethod
+    def post(request):
         # 不像用户咨询是一个新的。需要指明instance。不然无法修改，而是新增用户
         user_info_form = UserInfoForm(request.POST, instance=request.user)
         if user_info_form.is_valid():
@@ -330,13 +337,12 @@ class UserInfoView(LoginRequiredMixin, View):
 
 
 # 用户上传图片的view:用于修改头像
-
-
 class UploadImageView(LoginRequiredMixin, View):
     login_url = '/login/'
     redirect_field_name = 'next'
 
-    def post(self, request):
+    @staticmethod
+    def post(request):
         # 这时候用户上传的文件就已经被保存到imageform了 ，为modelform添加instance值直接保存
         image_form = UploadImageForm(
             request.POST, request.FILES, instance=request.user)
@@ -356,13 +362,12 @@ class UploadImageView(LoginRequiredMixin, View):
 
 
 # 在个人中心修改用户密码
-
-
 class UpdatePwdView(LoginRequiredMixin, View):
     login_url = '/login/'
     redirect_field_name = 'next'
 
-    def post(self, request):
+    @staticmethod
+    def post(request):
         modify_form = ModifyPwdForm(request.POST)
         if modify_form.is_valid():
             pwd1 = request.POST.get("password1", "")
@@ -391,20 +396,18 @@ class UpdatePwdView(LoginRequiredMixin, View):
 
 
 # 发送邮箱验证码的view:
-class SendEmailCodeView(LoginRequiredMixin, View):
-    def get(self, request):
+class SendEmailCodeView(View):
+    @staticmethod
+    def get(request):
         # 取出需要发送的邮件
         email = request.GET.get("email", "")
+        again = request.GET.get("again", False)
 
         # 不能是已注册的邮箱
-        if UserProfile.objects.filter(email=email):
-            return HttpResponse(
-                '{"email":"邮箱已经存在"}',
-                content_type='application/json')
-        send_register_eamil(email, "update_email")
-        return HttpResponse(
-            '{"status":"success"}',
-            content_type='application/json')
+        if not again and UserProfile.objects.filter(email=email):
+            return HttpResponse('{"email":"邮箱已经存在"}', content_type='application/json')
+        send_register_email(email, "update_email")
+        return HttpResponse('{"status":"success"}', content_type='application/json')
 
 
 # 修改邮箱的view:
@@ -412,7 +415,8 @@ class UpdateEmailView(LoginRequiredMixin, View):
     login_url = '/login/'
     redirect_field_name = 'next'
 
-    def post(self, request):
+    @staticmethod
+    def post(request):
         email = request.POST.get("email", "")
         code = request.POST.get("code", "")
 
@@ -437,7 +441,8 @@ class MyCourseView(LoginRequiredMixin, View):
     login_url = '/login/'
     redirect_field_name = 'next'
 
-    def get(self, request):
+    @staticmethod
+    def get(request):
         user_courses = UserCourse.objects.filter(user=request.user)
         return render(request, "usercenter-mycourse.html", {
             "user_courses": user_courses,
@@ -450,7 +455,8 @@ class MyFavOrgView(LoginRequiredMixin, View):
     login_url = '/login/'
     redirect_field_name = 'next'
 
-    def get(self, request):
+    @staticmethod
+    def get(request):
         org_list = []
         fav_orgs = UserFavorite.objects.filter(user=request.user, fav_type=2)
         # 上面的fav_orgs只是存放了id。我们还需要通过id找到机构对象
@@ -471,7 +477,8 @@ class MyFavTeacherView(LoginRequiredMixin, View):
     login_url = '/login/'
     redirect_field_name = 'next'
 
-    def get(self, request):
+    @staticmethod
+    def get(request):
         teacher_list = []
         fav_teachers = UserFavorite.objects.filter(user=request.user, fav_type=3)
         # 上面的fav_orgs只是存放了id。我们还需要通过id找到机构对象
@@ -492,7 +499,8 @@ class MyFavCourseView(LoginRequiredMixin, View):
     login_url = '/login/'
     redirect_field_name = 'next'
 
-    def get(self, request):
+    @staticmethod
+    def get(request):
         course_list = []
         fav_courses = UserFavorite.objects.filter(user=request.user, fav_type=1)
         # 上面的fav_orgs只是存放了id。我们还需要通过id找到机构对象
@@ -512,7 +520,8 @@ class MyMessageView(LoginRequiredMixin, View):
     login_url = '/login/'
     redirect_field_name = 'next'
 
-    def get(self, request):
+    @staticmethod
+    def get(request):
         all_message = UserMessage.objects.filter(user=request.user.id)
 
         # 用户进入个人中心消息页面，清空未读消息记录
@@ -537,7 +546,8 @@ class MyMessageView(LoginRequiredMixin, View):
 
 ## 首页view
 class IndexView(View):
-    def get(self, request):
+    @staticmethod
+    def get(request):
         # 取出轮播图
         all_banner = Banner.objects.all().order_by('index')[:5]
         # 正常位职位
