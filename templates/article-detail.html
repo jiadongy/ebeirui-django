@@ -1,0 +1,197 @@
+{% extends 'base.html' %}
+
+{% block titile %}
+文章详情页 | 贝睿求职
+{% endblock %}
+
+{% load staticfiles %}
+<!--crumbs start-->
+{% block custom_bread %}
+    <section>
+	<div class="wp">
+		<div class="crumbs">
+			<ul>
+				<li><a href="{% url 'index' %}">首页</a>></li>
+                <li><a href="{% url 'article:list' %}">文章列表</a>></li>
+				<li>{{ article.title }}</li>
+			</ul>
+		</div>
+	</div>
+</section>
+{% endblock %}
+
+{% block content %}
+    <section>
+	<div class="wp">
+		<div class="groupPurchase_detail detail">
+			<div class="toppro">
+				<div class="left">
+					<div class="picbox">
+						<div class="tb-booth tb-pic">
+							<img width="440" height="445" src="{{ MEDIA_URL }}{{ article.image }}" class="jqzoom" />
+						</div>
+
+					</div>
+					<div class="des">
+						<h1>{{ article.name }}</h1>
+						<span class="key">{{ article.abstract }}</span>
+						<div class="prize">
+							<span class="fr">浏览人数：{{ article.click_nums }}</span>
+						</div>
+						<ul class="parameter">
+{#							<li><span class="pram word3">时&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;长：</span><span>{{ article.learn_times }}</span></li>#}
+{#                            <li><span class="pram word3">章&nbsp;节&nbsp;数：</span><span>{{ article.lesson_set.count }}</span></li>#}
+                            <li><span class="pram word3">文章类别：</span><span title="">{{ article.category }}</span></li>
+{#							<li class="piclist"><span class="pram word4">学习用户：</span>#}
+{#                                    {% for user_article in article.userarticle_set.get_queryset|slice:":5"%}#}
+{#                                                                            <span class="pic"><img width="40" height="40" src="{{ MEDIA_URL }}{{ user_article.user.image }}"/></span>#}
+{#                                {% endfor %}#}
+{##}
+{##}
+{#							</li>#}
+						</ul>
+						<div class="btns">
+							<div class="btn colectgroupbtn"  id="jsLeftBtn">
+                                  {% if has_fav_article %}已收藏{% else %}收藏{% endif %}
+                            </div>
+{#                                <div class="buy btn" onclick="window.location.href= '{% url 'article:article_info' article.id %}';return false"><a style="color: white" href="{% url 'article:article_info' article.id %}">开始学习</a></div>#}
+						</div>
+					</div>
+                    {% comment %}<div class="group-share-box">
+                        <div class="bdsharebuttonbox"
+                             data-text="django开始了"
+                             data-desc="我在#贝睿求职#发现了"
+                             data-comment=""
+                             data-url="/group/groupdetail/15/">
+                            <span class="fl">分享到：</span>
+                            <a href="#" class="bds_more" data-cmd="more"></a>
+                            <a title="分享到QQ空间" href="#" class="bds_qzone" data-cmd="qzone"></a>
+                            <a title="分享到新浪微博" href="#" class="bds_tsina" data-cmd="tsina"></a>
+                            <a title="分享到腾讯微博" href="#" class="bds_tqq" data-cmd="tqq"></a>
+                            <a title="分享到人人网" href="#" class="bds_renren" data-cmd="renren"></a>
+                            <a title="分享到微信" href="#" class="bds_weixin" data-cmd="weixin"></a>
+                        </div>
+                    </div>{% endcomment %}
+				</div>
+				<div class="right">
+					{% comment %}<div class="head">
+						<h1>作者</h1>
+{#						<p>世界名校，课程权威</p>#}
+					</div>
+					<div class="pic">
+                        <a href="{% url 'org:org_home' article.course_org.id %}">
+                            <img width="150" height="80" src="{{ MEDIA_URL }}{{ article.course_org.image }}"/>
+                        </a>
+                    </div>
+					<a href="{% url 'org:org_home' article.course_org.id %}">
+                        <h2 class="center">{{ article.course_org.name }}</h2>
+                    </a>
+					<div class="btn  notlogin
+					     "data-favid="14" id="jsRightBtn">
+                         {% if has_fav_org %}已收藏{% else %}收藏{% endif %}
+                    </div>
+					<div class="clear">
+						<ul>
+{#                            <li>#}
+{#                                <span>课 &nbsp;程&nbsp; 数：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ article.article_org.article_nums }}</span>#}
+{#                            </li>#}
+{#                            <li>#}
+{#                                <span>教 &nbsp;师&nbsp; 数：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ article.article_org.teacher_set.count }}</span>#}
+{#                            </li>#}
+							<li>所在地区：&nbsp;&nbsp;{{ article.course_org.address }}</li>
+							<li>认&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;证&nbsp;:
+                                &nbsp;&nbsp;
+								    <img title="金牌机构", src="{% static 'images/gold.png' %}"/>
+							</li>
+						</ul>
+					</div>{% endcomment %}
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+    <section>
+	<div class="wp">
+		<div class="list groupPurchase_detail_pro">
+			<div class="left layout">
+				<div class="head">
+					<ul class="tab_header">
+						<li class="active">文章详情</li>
+					</ul>
+				</div>
+				<div class="tab_cont tab_cont1">
+                    {% autoescape off %}
+{{ article.content }}
+                    {% endautoescape %}
+				</div>
+				<div class="tab_cont tab_cont2" >
+					<div class="comment">
+						<div class="comenlist">
+
+	                    </div>
+					</div>
+				</div>
+			</div>
+			<div class="right layout">
+				<div class="head">相关文章推荐</div>
+                <div class="group_recommend">
+                    {% for relate_article in relate_articles %}
+                       <dl>
+                            <dt>
+                                <a target="_blank" href="{% url 'article:article_detail' relate_article.id %}">
+                                    <img width="240" height="220" class="scrollLoading" src="{{ MEDIA_URL }}{{ relate_article.image }}"/>
+                                </a>
+                            </dt>
+                            {% comment %}<dd>
+                                <a target="_blank" href="{% url 'article:article_detail' relate_article.id %}"><h2>{{ relate_article.name }}</h2></a>
+                                <span class="fl">学习时长：<i class="key">{{ relate_article.learn_times }}</i></span>
+                            </dd>{% endcomment %}
+                        </dl>
+                    {% endfor %}
+                </div>
+			</div>
+		</div>
+	</div>
+</section>
+{% endblock %}
+
+{{% block custom_js %}
+<script type="text/javascript">
+//收藏分享
+{% comment %}function add_fav(current_elem, fav_id, fav_type){
+    $.ajax({
+        cache: false,
+        type: "POST",
+        url:"{% url "org:add_fav" %}",
+        data:{'fav_id':fav_id, 'fav_type':fav_type},
+        async: true,
+        beforeSend:function(xhr, settings){
+            xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+        },
+        success: function(data) {
+            if(data.status == 'fail'){
+                if(data.msg == '用户未登录'){
+                    window.location.href="{% url 'login' %}?next={{ request.path }}";
+                }else{
+                    alert(data.msg)
+                }
+
+            }else if(data.status == 'success'){
+                current_elem.text(data.msg)
+            }
+        },
+    });
+}{% endcomment %}
+
+$('#jsLeftBtn').on('click', function(){
+    add_fav($(this), {{ article.id }}, 1);
+});
+
+{% comment %}$('#jsRightBtn').on('click', function(){
+    add_fav($(this), {{ article.course_org.id }}, 2);
+});{% endcomment %}
+
+
+</script>
+
+{% endblock %}

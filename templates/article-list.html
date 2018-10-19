@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block titile %}
+    文章列表页 | 贝睿求职
+{% endblock %}
+
+{% load staticfiles %}
+<!--crumbs start-->
+{% block custom_bread %}
+    <section>
+        <div class="wp">
+            <ul class="crumbs">
+                <li><a href="{% url 'index' %}">首页</a>></li>
+                <li>公开课</li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+
+{% block content %}
+    <section>
+        <div class="wp">
+            <div class="list" style="margin-top:0;">
+                <div class="left layout">
+                    <div class="head">
+                        <ul class="tab_header">
+                            <li class="{% ifequal sort "" %}active{% endifequal %}"><a
+                                    href="?sort=&keywords={{ search_keywords }}">最新</a></li>
+                            <li class="{% ifequal sort "hot" %}active{% endifequal %}"><a
+                                    href="?sort=hot&keywords={{ search_keywords }}">最热门</a></li>
+                        </ul>
+                    </div>
+                    <div id="inWindow">
+                        <div class="tab_cont " id="content">
+                            <div class="group_list">
+                                {% for article in all_articles.object_list %}
+                                    <div class="box">
+                                        <a href="{% url 'article:article_detail' article.id %}">
+                                            <img width="180" height="350" class="scrollLoading"
+                                                 src="{{ MEDIA_URL }}{{ article.image }}"/>
+                                        </a>
+                                        <div class="des">
+                                            <a href="{% url 'article:article_detail' article.id %}">
+                                                <h2>{{ article.title }}</h2>
+                                            </a>
+                                        </div>
+                                        <div class="bottom">
+                                            <span class="star fr  notlogin" data-favid="15">
+                                              {{ article.like_nums }}
+                                        </span>
+                                        </div>
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+                            <div class="pageturn">
+                                <ul class="pagelist">
+                                    {% if all_articles.has_previous %}
+                                        <li class="long"><a href="?{{ all_articles.previous_page_number.querystring }}">上一页</a>
+                                        </li>
+                                    {% endif %}
+                                    {% for page in all_articles.pages %}
+                                        {% if page %}
+                                            {% ifequal page all_articles.number %}
+                                                <li class="active"><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                                            {% else %}
+                                                <li><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                                            {% endifequal %}
+                                        {% else %}
+                                            <li class="none"><a href="">...</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if all_articles.has_next %}
+                                        <li class="long"><a
+                                                href="?{{ all_articles.next_page_number.querystring }}">下一页</a></li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="right layout">
+                    <div class="head">热门文章推荐</div>
+                    <div class="group_recommend">
+
+                        {% for hot_article in hot_articles %}
+                            <dl>
+                                <dt>
+                                    <a target="_blank" href="{% url 'article:article_detail' hot_article.id %}">
+                                        <img width="240" height="220" class="scrollLoading"
+                                             src="{{ MEDIA_URL }}{{ hot_article.image }}"/>
+                                    </a>
+                                </dt>
+                                <dd>
+                                    <a target="_blank" href="{% url 'article:article_detail' hot_article.id %}">
+                                        <h2> {{ hot_article.title }}</h2></a>
+                                </dd>
+                            </dl>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
