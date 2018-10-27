@@ -1,11 +1,13 @@
 # encoding: utf-8
 # Create your views here.
+from article.models import Article
 from courses.models import Course
 from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import View
-from operation.models import UserFavorite
+from operation.common_models import UserFavorite
+from operation.rest_views import ContentType_Map
 from organization.forms import UserAskForm
 from pure_pagination import Paginator, PageNotAnInteger
 
@@ -244,6 +246,12 @@ class AddFavView(View):
                 if teacher.fav_nums < 0:
                     teacher.fav_nums = 0
                 teacher.save()
+            elif int(type) == 4:
+                article = Article.objects.get(id=int(id))
+                article.fav_nums -= 1
+                if article.fav_nums < 0:
+                    article.fav_nums = 0
+                    article.save()
 
             return HttpResponse('{"status":"success", "msg":"收藏"}', content_type='application/json')
         else:
@@ -253,6 +261,7 @@ class AddFavView(View):
                 user_fav.fav_id = int(id)
                 user_fav.fav_type = int(type)
                 user_fav.user = request.user
+                user_fav.content_type = ContentType_Map.get(type)
                 user_fav.save()
 
                 if int(type) == 1:
@@ -267,6 +276,10 @@ class AddFavView(View):
                     teacher = Teacher.objects.get(id=int(id))
                     teacher.fav_nums += 1
                     teacher.save()
+                elif int(type) == 4:
+                    article = Article.objects.get(id=int(id))
+                    article.fav_nums += 1
+                    article.save()
                 return HttpResponse('{"status":"success", "msg":"已收藏"}', content_type='application/json')
             else:
                 return HttpResponse('{"status":"fail", "msg":"收藏出错"}', content_type='application/json')

@@ -1,7 +1,10 @@
 from datetime import datetime
 
+from django.contrib.contenttypes.fields import GenericRelation
+
 from DjangoUeditor.models import UEditorField
 from django.db import models
+
 from organization.models import CourseOrg, Teacher
 
 
@@ -39,6 +42,9 @@ class Course(models.Model):
     category = models.CharField(max_length=20, verbose_name=u"课程类别", default=u"后端开发")
     tag = models.CharField(max_length=15, verbose_name=u"课程标签", default=u"")
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u"添加时间")
+
+    from operation.common_models import UserFavorite
+    content_type = GenericRelation(UserFavorite)
 
     class Meta:
         verbose_name = u"课程"

@@ -4,7 +4,8 @@ __date__ = '2018/1/9 0009 22:12'
 
 import xadmin
 
-from .models import UserAsk, UserCourse, UserMessage, CourseComments, UserFavorite
+from .models import UserAsk, UserCourse, UserMessage, CourseComments
+from operation.common_models import UserFavorite
 
 
 # 用户表单我要学习后台管理器

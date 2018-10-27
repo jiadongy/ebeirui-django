@@ -1,12 +1,10 @@
 from datetime import datetime
 
-from courses.models import Course
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 # 引入我们CourseComments所需要的外键models
+from courses.models import Course
 from users.models import UserProfile
-
-
-# Create your models here.
 
 
 # 用户我要学习表单
@@ -26,6 +24,7 @@ class UserAsk(models.Model):
 
 # 用户对于课程评论
 class CourseComments(models.Model):
+
     # 会涉及两个外键: 1. 用户， 2. 课程。import进来
     course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name=u"课程")
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, verbose_name=u"用户")
@@ -38,39 +37,6 @@ class CourseComments(models.Model):
 
     def __str__(self):
         return '用户({0})对于《{1}》 评论 :'.format(self.user, self.course)
-
-
-# 用户对于课程,机构，讲师的收藏
-class UserFavorite(models.Model):
-    # 会涉及四个外键。用户，课程，机构，讲师import
-    TYPE_CHOICES = (
-        (1, u"课程"),
-        (2, u"课程机构"),
-        (3, u"讲师")
-    )
-
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, verbose_name=u"用户")
-    # course = models.ForeignKey(Course, verbose_name=u"课程")
-    # teacher = models.ForeignKey()
-    # org = models.ForeignKey()
-    # fav_type =
-
-    # 机智版
-    # 直接保存用户的id.
-    fav_id = models.IntegerField(default=0)
-    # 表明收藏的是哪种类型。
-    fav_type = models.IntegerField(
-        choices=TYPE_CHOICES,
-        default=1,
-        verbose_name=u"收藏类型")
-    add_time = models.DateTimeField(default=datetime.now, verbose_name=u"评论时间")
-
-    class Meta:
-        verbose_name = u"用户收藏"
-        verbose_name_plural = verbose_name
-
-    def __str__(self):
-        return '用户({0})收藏了{1} '.format(self.user, self.fav_type)
 
 
 # 用户消息表

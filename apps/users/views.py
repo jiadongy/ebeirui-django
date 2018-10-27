@@ -18,7 +18,8 @@ from pure_pagination import Paginator, PageNotAnInteger
 
 from courses.models import Course
 from jobs.models import Jobs, Recruiter
-from operation.models import UserCourse, UserFavorite, UserMessage
+from operation.models import UserCourse, UserMessage
+from operation.common_models import UserFavorite
 from organization.models import CourseOrg, Teacher
 # 发送邮件
 from utils.email_send import send_register_email

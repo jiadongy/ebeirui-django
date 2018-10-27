@@ -5,7 +5,8 @@ from django.http import HttpResponse
 from django.shortcuts import render
 # Create your views here.
 from django.views.generic.base import View
-from operation.models import UserFavorite, CourseComments, UserCourse
+from operation.models import CourseComments, UserCourse
+from operation.common_models import UserFavorite
 from pure_pagination import Paginator, PageNotAnInteger
 
 

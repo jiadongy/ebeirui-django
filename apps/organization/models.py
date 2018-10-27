@@ -1,6 +1,7 @@
 # coding : utf-8
 from datetime import datetime
 
+from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 
 
@@ -51,6 +52,9 @@ class CourseOrg(models.Model):
     course_nums = models.IntegerField(default=0, verbose_name=u"课程数")
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u"添加时间")
 
+    from operation.common_models import UserFavorite
+    content_type = GenericRelation(UserFavorite)
+
     class Meta:
         verbose_name = u"课程机构"
         verbose_name_plural = verbose_name
@@ -78,6 +82,9 @@ class Teacher(models.Model):
         verbose_name=u"头像",
         max_length=100)
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u"添加时间")
+
+    from operation.common_models import UserFavorite
+    content_type = GenericRelation(UserFavorite)
 
     class Meta:
         verbose_name = u"教师"

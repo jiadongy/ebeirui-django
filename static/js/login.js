@@ -329,6 +329,8 @@ $(function () {
 
     //弹出框关闭按钮
     $('.jsCloseDialog').on('click', function () {
+        $('#jsDialog').hide();
+        $('html').removeClass('dialog-open');
         $(this).parents('.dialogbox').hide();
         $('#dialogBg').hide();
         if ($(this).siblings('form')[0]) {

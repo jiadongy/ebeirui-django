@@ -33,7 +33,10 @@ ALLOWED_HOSTS = ['*']
 # 设置邮箱和用户名均可登录
 AUTHENTICATION_BACKENDS = (
     'users.views.CustomBackend',
-)
+    'social_core.backends.weibo.WeiboOAuth2',
+    'social_core.backends.qq.QQOAuth2',
+    'social_core.backends.weixin.WeixinOAuth2',
+    'django.contrib.auth.backends.ModelBackend',)
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -42,6 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'django_filters',
     'rest_framework',
     'corsheaders',
     'xadmin',
@@ -49,6 +54,12 @@ INSTALLED_APPS = [
     'captcha',
     'pure_pagination',
     'DjangoUeditor',
+    "debug_toolbar",
+    "rest_framework_swagger",
+    'social_django',
+    'drf_multiple_model',
+    'generic_relations',
+
     'article',
     'jobs',
     'users',
@@ -57,11 +68,11 @@ INSTALLED_APPS = [
     'organization',
     "evaluation",
     "competitive",
-    "debug_toolbar",
-    "rest_framework_swagger"
+
 ]
 # 此处重载是为了使我们的UserProfile生效
 AUTH_USER_MODEL = "users.UserProfile"
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -72,7 +83,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware'
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    # 'django.middleware.cache.UpdateCacheMiddleware',
+    # 'django.middleware.cache.FetchFromCacheMiddleware',
 ]
 
 ROOT_URLCONF = 'Mxonline3.urls'
@@ -80,8 +93,7 @@ ROOT_URLCONF = 'Mxonline3.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
-        ,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -92,6 +104,8 @@ TEMPLATES = [
                 "django.template.context_processors.i18n",
                 'django.template.context_processors.media',
                 'django.template.context_processors.request',
+                # 'social_django.context_processors.backends',
+                # 'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -110,7 +124,6 @@ DATABASES = {
         'PASSWORD': 'Abcd1234!',  # sDtbqsJ(&7!123
         'HOST': '127.0.0.1',
         'OPTIONS': {'charset': 'utf8mb4'},
-
     }
 }
 
@@ -118,41 +131,26 @@ DATABASES = {
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', },
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator', },
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator', },
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator', },
 ]
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
-
 # 语言改为中文
 LANGUAGE_CODE = 'zh-hans'
-
 # 时区改为上海
 TIME_ZONE = 'Asia/Shanghai'
-
 USE_I18N = True
-
 USE_L10N = True
-
 # 数据库存储使用时间，True时间会被存为UTC的时间
 USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
-
 STATIC_URL = '/static/'
-
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
@@ -167,19 +165,11 @@ EMAIL_FROM = "ebeirui@163.com"
 EMAIL_USE_SSL = True
 
 # 设置我们上传文件的路径
-
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-CORS_ORIGIN_WHITELIST = (
-    '127.0.0.1:8080',
-    '127.0.0.1:8000',
-    '127.0.0.1:8082',
-    'localhost:8080',
-    'localhost:8000',
-    'localhost:8082',
-)
+CORS_ORIGIN_WHITELIST = ('127.0.0.1:8080', '127.0.0.1:8000', '127.0.0.1:8082', 'localhost:8080', 'localhost:8000', 'localhost:8082',)
 
 APPEND_SLASH = True
 
@@ -199,3 +189,35 @@ DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.logging.LoggingPanel',
     'debug_toolbar.panels.redirects.RedirectsPanel',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10,
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    )
+}
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
+# 第三方登录相关
+SOCIAL_AUTH_WEIBO_KEY = 'foobar'
+SOCIAL_AUTH_WEIBO_SECRET = 'bazqux'
+
+SOCIAL_AUTH_QQ_KEY = 'foobar'
+SOCIAL_AUTH_QQ_SECRET = 'bazqux'
+
+SOCIAL_AUTH_WEIXIN_KEY = 'foobar'
+SOCIAL_AUTH_WEIXIN_SECRET = 'bazqux'
+
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/index/'

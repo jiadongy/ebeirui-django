@@ -1,4 +1,4 @@
-#!C:\Users\i01007600802\iCloudDrive\zWorkspace\python-ebeirui-django\pvenv\Scripts\python.exe
+#!C:\Users\feiyu\iCloudDrive\zWorkspace\python-ebeirui-django\penv\Scripts\python.exe
 # EASY-INSTALL-ENTRY-SCRIPT: 'pip==10.0.1','console_scripts','pip3.6'
 __requires__ = 'pip==10.0.1'
 import re

@@ -36,3 +36,13 @@ xlwt==1.3.0
 requests
 django-debug-toolbar
 django-rest-swagger
+python-weixin
+markdown
+django-filter
+django-guardian
+coreapi
+djangorestframework-recursive
+social-auth-app-django
+django-redis
+django-rest-multiple-models
+ rest-framework-generic-relations
