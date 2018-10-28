@@ -27,7 +27,12 @@ class UserFavorite(models.Model):
     class Meta:
         verbose_name = u"用户收藏"
         verbose_name_plural = verbose_name
-        # unique_together = ['fav_id', 'user', 'fav_type']
+        unique_together = ['fav_id', 'user', 'fav_type', 'is_valid']
 
     def __str__(self):
         return '用户({0})收藏了{1}类-{2}'.format(self.user, self.fav_type, self.fav_id)
+
+
+ContentType_Map = {
+    4: ContentType.objects.get(app_label__exact="article", model__exact="article"),
+}

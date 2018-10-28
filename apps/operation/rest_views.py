@@ -1,6 +1,5 @@
 from datetime import datetime
 
-from django.contrib.contenttypes.models import ContentType
 from django_filters.rest_framework import DjangoFilterBackend
 from generic_relations.relations import GenericRelatedField
 from rest_framework import serializers, viewsets, filters, mixins
@@ -8,13 +7,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.validators import UniqueTogetherValidator
 
 from article.models import Article
-from article.rest_views import ArticleDetailSerializer, ArticleListSerializer
-from operation.common_models import UserFavorite
+from operation.common_models import UserFavorite, ContentType_Map
 from users.models import UserProfile
-
-ContentType_Map = {
-    4: ContentType.objects.get(app_label__exact="article", model__exact="article"),
-}
 
 
 class FavorArticleSerializer(serializers.ModelSerializer):
@@ -32,12 +26,13 @@ class UserFavorSerializer(serializers.ModelSerializer):
         Article: FavorArticleSerializer()
     }, read_only=True)
     # write-only fields
-    fav_type = serializers.IntegerField(write_only=True, min_value=1, max_value=4)
+    fav_type = serializers.IntegerField(write_only=True, min_value=1)
 
     class Meta:
         model = UserFavorite
         fields = ('id', 'user', 'add_time', 'fav_object', 'fav_type', 'fav_id')
-        # validators = [UniqueTogetherValidator(message="已经收藏", fields=('user', 'fav_type', 'fav_id'), queryset=UserFavorite.objects.all())]
+        validators = [
+            UniqueTogetherValidator(message="已经收藏", fields=('user', 'fav_type', 'fav_id'), queryset=UserFavorite.objects.all().filter(is_valid=True))]
 
     def create(self, validated_data):
         content_type = ContentType_Map.get(validated_data.get("fav_type"))
@@ -59,6 +54,9 @@ class UserFavorViewSet(viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixin
 
     def get_queryset(self):
         return UserFavorite.objects.all().filter(user_id__exact=self.request.user.id, is_valid=True)
+
+    def perform_destroy(self, instance):
+        instance.update({'is_valid': False})
 
     # def list(self, request, *args, **kwargs):
     #     self.serializer_class = UserFavorSerializer

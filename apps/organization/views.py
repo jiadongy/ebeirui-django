@@ -6,8 +6,7 @@ from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import View
-from operation.common_models import UserFavorite
-from operation.rest_views import ContentType_Map
+from operation.common_models import UserFavorite, ContentType_Map
 from organization.forms import UserAskForm
 from pure_pagination import Paginator, PageNotAnInteger
 
