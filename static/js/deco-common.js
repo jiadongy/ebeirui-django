@@ -64,16 +64,18 @@ function search_click(){
         keywords = $('#search_keywords').val(),
         request_url = '';
 
-    if(keywords == ""){
+    if (keywords === "") {
         return
+    } else {
+        request_url = "/aggregate/search?keywords=" + keywords
     }
-    if(type == "jobs"){
-        request_url = "/jobs/list?keywords="+keywords
-    }else if(type == "company"){
-        request_url = "/jobs/company/list?keywords="+keywords
-    }else if(type == "course"){
-        request_url = "/course/list?keywords="+keywords
-    }
+    // if(type === "jobs"){
+    //     request_url = "/jobs/list?keywords="+keywords
+    // }else if(type === "company"){
+    //     request_url = "/jobs/company/list?keywords="+keywords
+    // }else if(type === "course"){
+    //     request_url = "/course/list?keywords="+keywords
+    // }
     window.location.href = request_url
 }
 

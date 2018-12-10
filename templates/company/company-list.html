@@ -1,114 +1,121 @@
 {% extends 'base.html' %}
 
 {% block titile %}
-    公开课列表页 | 贝睿求职
+    机构点评页 | 贝睿求职
 {% endblock %}
 
 {% load staticfiles %}
 <!--crumbs start-->
 {% block custom_bread %}
-    <section>
+    <!--     <section>
         <div class="wp">
             <ul class="crumbs">
                 <li><a href="{% url 'index' %}">首页</a>></li>
                 <li>金融公司库</li>
             </ul>
         </div>
-    </section>
+    </section> -->
 {% endblock %}
 
 {% block content %}
     <section>
-
         <div class="wp butler_list_box list">
-            <div class='left'>
+            <div class='left' style="float: left; width:650px; background:#fff;padding:20px;">
                 <div class="listoptions">
                     <ul>
-
                         <li>
                             <h2>所属行业</h2>
-{#                            					<div class="more">更多</div>#}
+                            {#                            					<div class="more">更多</div>#}
                             <div class="cont">
-                                <a href="?keywords={{ search_keywords }}&city={{ city_id }}"><span
-                                        class="{% ifequal industry_id "" %}active2{% endifequal %}">全部</span></a>
+                                <a href="?keywords={{ search_keywords }}&city={{ city_id }}">
+                                    <span class="{% ifequal industry_id "" %}active2{% endifequal %}">全部</span>
+                                </a>
                                 {% for indus in all_industry %}
-                                    <a href="?industry={{ indus.id }}&city={{ city_id }}&keywords={{ search_keywords }}"><span
-                                            class="{% ifequal indus.id|stringformat:"i" industry_id %}active2{% endifequal %}">{{ indus.name }}</span></a>
+                                    <a href="?industry={{ indus.id }}&city={{ city_id }}&keywords={{ search_keywords }}">
+                                        <span class="{% ifequal indus.id|stringformat:"i" industry_id %}active2{% endifequal %}">{{ indus.name }}</span>
+                                    </a>
                                 {% endfor %}
                             </div>
                         </li>
 
                         <li>
                             <h2>所在地区</h2>
-{#                            					<div class="more">更多</div>#}
+                            {#                            					<div class="more">更多</div>#}
                             <div class="cont">
-                                <a href="?industry={{ industry_id }}&keywords={{ search_keywords }}"><span
-                                        class="{% ifequal city_id "" %}active2{% endifequal %}">全部</span></a>
+                                <a href="?industry={{ industry_id }}&keywords={{ search_keywords }}">
+                                    <span class="{% ifequal city_id "" %}active2{% endifequal %}">全部</span>
+                                </a>
                                 {% for city in all_city %}
-                                    <a href="?industry={{ industry_id }}&city={{ city.id }}&keywords={{ search_keywords }}"><span
-                                            class="{% ifequal city.id|stringformat:"i" city_id %}active2{% endifequal %}">{{ city.name }}</span></a>
+                                    <a href="?industry={{ industry_id }}&city={{ city.id }}&keywords={{ search_keywords }}">
+                                        <span class="{% ifequal city.id|stringformat:"i" city_id %}active2{% endifequal %}">{{ city.name }}</span>
+                                    </a>
                                 {% endfor %}
                             </div>
                         </li>
-
                     </ul>
                 </div>
                 <br>
 
-                <div class="wp">
+                <div>
                     <div class="list" style="margin-top:0;">
                         <div class="left layout">
                             <div class="head">
                                 <ul class="tab_header">
-                                    <li class="{% ifequal sort "" %}active{% endifequal %}"><a
-                                            href="?sort=time&keywords={{ search_keywords }}">最新 </a></li>
-                                    <li class="{% ifequal sort "hot" %}active{% endifequal %}"><a
-                                            href="?sort=hot&keywords={{ search_keywords }}">最热门</a></li>
+                                    <li class="{% ifequal sort "" %}active{% endifequal %}">
+                                        <a href="?sort=time&keywords={{ search_keywords }}">最新 </a>
+                                    </li>
+                                    <li class="{% ifequal sort "hot" %}active{% endifequal %}">
+                                        <a href="?sort=hot&keywords={{ search_keywords }}">最热门</a>
+                                    </li>
                                 </ul>
                             </div>
                             <div id="inWindow">
                                 <div class="tab_cont " id="content">
-                                    <div class="group_list">
+                                    <div style="width: 650px;float: left;background: #fff;padding: 20px;">
                                         {% for ele in all_company.object_list %}
-                                            <div class="box">
+                                            <div class="company_post" style="">
+                                                <div style="float:left;margin-right:15px;width:150px;">
+                                                    <div style="width: 140px;height: 100px; overflow:hidden;border:1px #eaeaea solid">
+                                                        <a href="{% url 'jobs:com_detail' ele.id %}">
+                                                            <img width="140" height="100" class="scrollLoading" src="{{ MEDIA_URL }}{{ ele.image }}"/>
+                                                        </a>
+                                                    </div>
+                                                </div>
 
-                                                <a href="{% url 'jobs:com_detail' ele.id %}">
-                                                    <img width="150" height="170" class="scrollLoading"
-                                                         src="{{ MEDIA_URL }}{{ ele.image }}"/>
-                                                </a>
-                                                <div class="des">
-{#                                                    <a href="{% url 'course:course_detail' course.id %}">#}
-{#                                                        <h3>{{ ele.name }}</h3>#}
-{#                                                    </a>#}
-{#                                                    <span class="fl">地址：#}
-{#                                                        <i class="key">{{ele.city }}</i></span>#}
-                                                    <span class="fl">标签：{{ ele.tags }}&nbsp;&nbsp;</span>
+                                                <div style="float:left;width:420px;">
+                                                    <div class="company_post_tit">
+                                                        <h2>
+                                                            <a href="{% url 'jobs:com_detail' ele.id %}">  {{ ele.name }}</a>&nbsp;
+                                                            &nbsp;&nbsp;<span style="float:right"> 平均薪酬：3万/月 &nbsp;&nbsp; &nbsp;&nbsp;综合评分：8分</span>
+                                                        </h2>
+                                                    </div>
+                                                    <div class="company_post_body">
+                                                        <p> 标签：{{ ele.tags }}</p>
+                                                    </div>
+                                                    <div class="company_post_meta">
+                                                        <p>行业：{{ ele.industry }} &nbsp;&nbsp;&nbsp;贝睿评级：I级 &nbsp;&nbsp;&nbsp;点评数据（550条）
+                                                            <span style="float:right">赞 &nbsp;&nbsp;  &nbsp;&nbsp;收藏 &nbsp;&nbsp;  &nbsp;&nbsp;写点评 </span>
+                                                        </p>
+                                                    </div>
                                                 </div>
-                                                <div class="bottom">
-                                                    <a href="{% url 'jobs:com_detail' ele.id %}"><span
-                                                            class="fl"> {{ ele.name }}</span></a>
-                                                    <span class="star fr  notlogin
-                                                                                " data-favid="15">
-                                                                 {{ ele.collect_num }}
-                                                                            </span>
-                                                </div>
+                                                <div class="clear"></div>
                                             </div>
-
                                         {% endfor %}
-
                                     </div>
+
                                     <div class="pageturn">
                                         <ul class="pagelist">
                                             {% if all_company.has_previous %}
-                                                <li class="long"><a
-                                                        href="?{{ all_company.previous_page_number.querystring }}">上一页</a>
+                                                <li class="long">
+                                                    <a href="?{{ all_company.previous_page_number.querystring }}">上一页</a>
                                                 </li>
                                             {% endif %}
                                             {% for page in all_company.pages %}
                                                 {% if page %}
                                                     {% ifequal page all_company.number %}
-                                                        <li class="active"><a
-                                                                href="?{{ page.querystring }}">{{ page }}</a></li>
+                                                        <li class="active">
+                                                            <a href="?{{ page.querystring }}">{{ page }}</a>
+                                                        </li>
                                                     {% else %}
                                                         <li><a href="?{{ page.querystring }}">{{ page }}</a></li>
                                                     {% endifequal %}
@@ -117,8 +124,8 @@
                                                 {% endif %}
                                             {% endfor %}
                                             {% if all_company.has_next %}
-                                                <li class="long"><a
-                                                        href="?{{ all_company.next_page_number.querystring }}">下一页</a>
+                                                <li class="long">
+                                                    <a href="?{{ all_company.next_page_number.querystring }}">下一页</a>
                                                 </li>
                                             {% endif %}
                                         </ul>
@@ -129,5 +136,22 @@
 
                     </div>
                 </div>
+
+            </div>
+
+            <div style="float:right; width:250px;height: 500px; background:#fff;padding:20px;">
+                <div class="head">贝睿推荐</div>
+                {% for curent_org in hot_orgs %}
+                    <dl class="des">
+                        <dt class="num fl">{{ forloop.counter }}</dt>
+                        {#                        <dd>#}
+                        {#                            <a href="{% url 'org:org_home' curent_org.id %}"><h1>{{ curent_org.name }}</h1></a>#}
+                        {#                            <p>{{ curent_org.address }}</p>#}
+                        {#                        </dd>#}
+                    </dl>
+                {% endfor %}
+            </div>
+            <div class="clear"></div>
+        </div>
     </section>
 {% endblock %}

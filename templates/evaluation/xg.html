@@ -1,11 +1,14 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<!-- saved from url=(0038)https://form.jotform.me/81992321838465 -->
-<html class="supernova">
-{% load staticfiles %}
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+{% extends 'base.html' %}
 
-    <title>贝睿性格色彩测试</title>
+{% block titile %}
+    贝睿性格色彩测试 | 贝睿求职-金融智能求职专家
+{% endblock %}
+
+{% load staticfiles %}
+<!--crumbs start-->
+{% block custom_bread %}
+
+
     <link href="{% static 'css/evaluation/formCss.css' %}"   rel="stylesheet" type="text/css">
     <link type="text/css" media="print" rel="stylesheet" href="{% static 'css/evaluation/printForm.css' %}" >
     <link type="text/css" rel="stylesheet" href="{% static 'css/evaluation/nova.css' %}"  >
@@ -27,13 +30,13 @@
         body, html {
             margin: 0;
             padding: 0;
-            background: #fff;
+            background: #f2f5f4;
         }
 
         .form-all {
             margin: 0px auto;
             padding-top: 0px;
-            width: 690px;
+            width: 750px;
             color: #555 !important;
             font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Verdana, sans-serif;
             font-size: 14px;
@@ -186,11 +189,14 @@
     }
     </style>
     <link type="text/css" rel="stylesheet" href="chrome-extension://pioclpoplcdbaefihamjohnefbikjilc/content.css">
-</head>
-<body>
-<form action="/evaluation/get_xg_data/" method="post">
 
-    <br />{% csrf_token %}<br />
+
+
+    <div class="wp">
+
+        <form action="/evaluation/get_xg_data/" method="post">
+
+            {% csrf_token %}
 
     <div class="form-all">
         <ul class="form-section page-section">
@@ -1510,5 +1516,6 @@
 
 <img id="event_tracking_image" src="./Form_files/saved_resource" alt="jftr" style="display: none;">
 
-</body>
-</html>
+    </div>
+
+{% endblock %}

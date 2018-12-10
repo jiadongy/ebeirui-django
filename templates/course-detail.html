@@ -7,7 +7,7 @@
 {% load staticfiles %}
 <!--crumbs start-->
 {% block custom_bread %}
-    <section>
+    <!-- <section>
 	<div class="wp">
 		<div class="crumbs">
 			<ul>
@@ -17,29 +17,32 @@
 			</ul>
 		</div>
 	</div>
-</section>
+</section> -->
 {% endblock %}
 
 {% block content %}
     <section>
 	<div class="wp">
-		<div class="groupPurchase_detail detail">
+        <div style="width:650px;float:left;background:#fff;padding:20px;">
+
+            <div class="groupPurchase_detail detail">
 			<div class="toppro">
 				<div class="left">
 					<div class="picbox">
 						<div class="tb-booth tb-pic">
-							<img width="440" height="445" src="{{ MEDIA_URL }}{{ course.image }}" class="jqzoom" />
-						</div>
+                            <img width="200" height="160" src="{{ MEDIA_URL }}{{ course.image }}" class="jqzoom"/>
+                        </div>
 
-					</div>
+                    </div>
+
 					<div class="des">
 						<h1 title="django 从入门到精通体验开始了">{{ course.name }}</h1>
 						<span class="key">{{ course.desc }}</span>
-						<div class="prize">
+                        <div class="prize11">
 							<span class="fl">难度：<i class="key">{{ course.get_degree_display }}</i></span>
 							<span class="fr">学习人数：{{ course.students }}</span>
 						</div>
-						<ul class="parameter">
+                        <ul class="parameter11">
 							<li><span class="pram word3">时&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;长：</span><span>{{ course.learn_times }}</span></li>
                             <li><span class="pram word3">章&nbsp;节&nbsp;数：</span><span>{{ course.lesson_set.count }}</span></li>
                             <li><span class="pram word3">课程类别：</span><span title="">{{ course.category }}</span></li>
@@ -51,30 +54,44 @@
 
 							</li>
 						</ul>
-						<div class="btns">
+
+                    </div>
+
+
+                    <div class="btns">
 							<div class="btn colectgroupbtn"  id="jsLeftBtn">
                                   {% if has_fav_course %}已收藏{% else %}收藏{% endif %}
                             </div>
                                 <div class="buy btn" onclick="window.location.href= '{% url 'course:course_info' course.id %}';return false"><a style="color: white" href="{% url 'course:course_info' course.id %}">开始学习</a></div>
 						</div>
-					</div>
-                    <div class="group-share-box">
-                        <div class="bdsharebuttonbox"
-                             data-text="django开始了"
-                             data-desc="我在#贝睿求职#发现了"
-                             data-comment=""
-                             data-url="/group/groupdetail/15/">
-                            <span class="fl">分享到：</span>
-                            <a href="#" class="bds_more" data-cmd="more"></a>
-                            <a title="分享到QQ空间" href="#" class="bds_qzone" data-cmd="qzone"></a>
-                            <a title="分享到新浪微博" href="#" class="bds_tsina" data-cmd="tsina"></a>
-                            <a title="分享到腾讯微博" href="#" class="bds_tqq" data-cmd="tqq"></a>
-                            <a title="分享到人人网" href="#" class="bds_renren" data-cmd="renren"></a>
-                            <a title="分享到微信" href="#" class="bds_weixin" data-cmd="weixin"></a>
+
+
+                    <div class="clear"></div>
+                </div>
+
+
+                <div class="left layout" style="min-height:400px;">
+                    <div class="head">
+                        <ul class="tab_header">
+                            <li class="active">课程详情</li>
+                        </ul>
+                    </div>
+                    <div class="tab_cont tab_cont1">
+                        {% autoescape off %}
+                            {{ course.detail }}
+                        {% endautoescape %}
+                    </div>
+                    <div class="tab_cont tab_cont2">
+                        <div class="comment">
+                            <div class="comenlist">
+
+                            </div>
                         </div>
                     </div>
-				</div>
-				<div class="right">
+                </div>
+
+
+                <!-- 			<div class="right">
 					<div class="head">
 						<h1>授课机构</h1>
 {#						<p>世界名校，课程权威</p>#}
@@ -106,34 +123,17 @@
 							</li>
 						</ul>
 					</div>
-				</div>
+				</div> -->
 			</div>
 		</div>
-	</div>
-</section>
-    <section>
-	<div class="wp">
-		<div class="list groupPurchase_detail_pro">
-			<div class="left layout">
-				<div class="head">
-					<ul class="tab_header">
-						<li class="active">课程详情</li>
-					</ul>
-				</div>
-				<div class="tab_cont tab_cont1">
-                    {% autoescape off %}
-{{ course.detail }}
-                    {% endautoescape %}
-				</div>
-				<div class="tab_cont tab_cont2" >
-					<div class="comment">
-						<div class="comenlist">
+        </div>
 
-	                    </div>
-					</div>
-				</div>
-			</div>
-			<div class="right layout">
+
+        <div style="width:250px;float:right;background:#fff;padding:20px;">
+		<div class="list groupPurchase_detail_pro">
+
+
+            <div class="right layout">
 				<div class="head">相关课程推荐</div>
                 <div class="group_recommend">
 
@@ -159,6 +159,9 @@
 			</div>
 		</div>
 	</div>
+        <div class="clear"></div>
+
+    </div>
 </section>
 {% endblock %}
 
