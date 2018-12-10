@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     'organization',
     "evaluation",
     "competitive",
+    "aggregate"
 
 ]
 # 此处重载是为了使我们的UserProfile生效

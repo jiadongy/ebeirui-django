@@ -1,137 +1,106 @@
 {% extends 'base.html' %}
-
 {% block titile %}
-    首页 | 贝睿求职
+    贝睿科技-金融智能求职专家
 {% endblock %}
-
 {% load staticfiles %}
 <!--crumbs start-->
 {% block custom_bread %}
 {% endblock %}
-
-
 {% block content %}
-    <div class="banner">
-        <div class="wp">
-            <div class="fl">
-                <div class="imgslide">
-                    <ul class="imgs">
+    <!--中间层开始-->
+    <div id="center">
+        <div id=content>
+            <div id="job">
+                <div class="jobtit">热门岗位> &nbsp;&nbsp; <span style="float:right"> <a href="{% url 'jobs:job_list' %}"
+                                                                                     style="font-size:12px">查看更多信息 ></a></span></div>
 
-                        {% for banner in all_banner %}
-                            <li>
-                                <a href="{{ banner.url }}">
-                                    <img width="1200" height="478" src="{{ MEDIA_URL }}{{ banner.image }}"/>
-                                </a>
-                            </li>
-                        {% endfor %}
-
-                    </ul>
-                </div>
-                <div class="unslider-arrow prev"></div>
-                <div class="unslider-arrow next"></div>
+                {% for job in jobs %}
+                    <div class="job_post">
+                        <div class="job_post_tit">
+                            <h2>
+                                <i>【{{ job.city }}】</i>
+                                <a href="{% url 'jobs:job_detail' job.id %}"> {{ job.company.name }}- {{ job.title }}</a>
+                                <span style="float:right"> ★★★★★（贝睿评级）</span>
+                            </h2>
+                        </div>
+                        <div class="job_post_body">
+                            <p>  {{ job.responsibility }}<br/> {{ job.requirement }}</p>
+                        </div>
+                        <div class="job_post_meta">
+                            <p>
+                                <span>{{ job.job_type }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <span>部门：{{ job.depart }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <span>发布时间：{{ job.add_time |date:"F j, Y" }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <span>职位编号：{{ job.id }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <span>收藏</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <span>查看点评数据</span>
+                                <span style="float:right"><a href="{% url 'jobs:job_detail' job.id %}" target="_blank"> ....详情&nbsp;&nbsp;</a></span>
+                            </p>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
 
+            <div style="height:10px;background:#f2f5f4;margin-bottom:10px"></div>
+
+            <div id="company">
+                <div class="jobtit">热门点评> &nbsp;&nbsp;
+                    <span style="float:right">
+                        <a href="{% url 'jobs:com_list' %}" style="font-size:12px">查看更多机构点评 ></a>
+                    </span>
+                </div>
+
+                <div class="company_post">
+                    <div class="company_post_tit"><h2>
+                        <a href="#">易方达基金&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;很怀念的生活 &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;薪酬：20K/M </a></h2></div>
+                    <div class="company_post_body">
+                        <p> 易方达作为买方龙头，福利待遇一直很好，正式员工，到手的话有3-4万元，主要发展历程是研究员-基金经理-投资总监，后面会出来做私募；</p>
+                    </div>
+                    <div class="company_post_meta">
+                        <p><a href="#">user2 &nbsp;&nbsp; 离职人员（曾工作2年） &nbsp;&nbsp; &nbsp;&nbsp; 投研部&nbsp;&nbsp; &nbsp;&nbsp;北京</a></p>
+                    </div>
+                </div>
+
+                {% for org in orgs %}
+                    <div class="company_post">
+                        <div class="company_post_tit">
+                            <h2>
+                                <a href="{% url 'jobs:com_detail' org.id %}">{{ org.name }}:{{ org.city }}:{{ org.industry }}:{{ org.tags }}:{{ company.tags }}{{ comment.comments }}:{{ company.user }}{{ comment.job_payment }}</a>
+                            </h2>
+                        </div>
+                        <div class="company_post_body">
+                            总体评价还可以，作为行业龙头。到手工资有3w多，里面工作环境也挺好，升职也比较快
+                        </div>
+                        <div class="company_post_meta">
+                            <p><a href="#">{{ org.industry.name }};&nbsp; 实习生/（1年） &nbsp;&nbsp;&nbsp;&nbsp; 投行部 &nbsp;&nbsp;&nbsp;&nbsp; 北京</a></p>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+
+            <div style="height:8px;background:#f2f5f4;margin-bottom:10px"></div>
+        </div>
+        <!-- content层结束，aside层开始 -->
+
+        <div id="aside">
+            <div id="test">
+                <div class="jobtit" style="text-align:center">智能职场测评</div>
+
+                <div class="test_post">
+                    <div class="test_post_tit"><a href="#"><img src="{% static 'images/1.png' %}" width="220" height="90" alt="职场竞争力测试"></a></div>
+                </div>
+                <div class="test_post">
+                    <div class="test_post_tit"><a href="http://www.ebeirui.com/evaluation/xg/">
+                        <img src="{% static 'images/2.png' %}" width="220" height="90" alt="性格测试"></a>
+                    </div>
+                </div>
+            </div>
         </div>
 
-
+        <div class="clear"></div>
     </div>
-    <!--banner end-->
-    <!--feature start-->
-    <section>
-        <div class="wp">
-            <ul class="feature">
-                <li class="feature1">
-                    <img class="pic" src="{% static 'images/feature1.png' %}"/>
-                    <p class="center">专业权威</p>
-                </li>
-                <li class="feature2">
-                    <img class="pic" src="{% static 'images/feature2.png' %}"/>
-                    <p class="center">职前教育</p>
-                </li>
-                <li class="feature3">
-                    <img class="pic" src="{% static 'images/feature3.png' %}"/>
-                    <p class="center">行业大拿</p>
-                </li>
-                <li class="feature4">
-                    <img class="pic" src="{% static 'images/feature4.png' %}"/>
-                    <p class="center">数据真实</p>
-                </li>
-            </ul>
-        </div>
-    </section>
-    <!--feature end-->
-    <!--module1 start-->
-    <section>
-        <div class="module">
-            <div class="wp">
-                <h1>公开职位</h1>
-                <div class="module1 eachmod">
-                    <div class="module1_1 left">
-                        <img width="228" height="614" src="{% static 'images/module1_1.jpg' %}"/>
-                        <p class="fisrt_word">贝睿精心挑选<br/>专业权威</p>
-                        <a class="more" href="{% url 'jobs:job_list' %}">查看更多信息 ></a>
-                    </div>
-                    <div class="right group_list">
 
-                        {% for job in jobs %}
-                            <div class=" box" style="margin-right: 5px;margin-bottom: 7px">
-                                <a href="{% url 'jobs:job_detail' job.id %}">
-                                    <img width="220" height="170" src="{{ MEDIA_URL }}{{ job.company.image }}"/>
-                                </a>
-                                <div class="des">
-                                    <a href="{% url 'jobs:job_detail' job.id %}">
-                                        <h2> {{ job.title }}</h2>
-                                    </a>
-                                    <span class="fl">地点：<i class="key">{{ job.city }}</i></span>
-                                    <span class="fr">部门：{{ job.depart }}</span>
-                                </div>
-                                <div class="bottom">
-                                    <span class="fl" >{{ job.company.name }}</span>
-                                    <span class="star fr">{{ job.click_num }}</span>
-                                </div>
-                            </div>
-                        {% endfor %}
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section>
-        <div class="module greybg">
-            <div class="wp">
-                <h1>企业机构</h1>
-                <div class="module3 eachmod">
-                    <div class="module3_1 left">
-                        <img width="228" height="463" src="{% static 'images/module3_1.jpg' %}"/>
-                        <p class="fisrt_word">名企来袭<br/>权威认证</p>
-                        <a class="more" href="{% url 'jobs:com_list' %}">查看更多机构 ></a>
-                    </div>
-                    <div class="right">
-                        <ul>
-                            {% for org in orgs %}
-                                <li class="{% if forloop.counter|divisibleby:'5' %}five{% endif %}">
-                                    <a href="{% url 'jobs:com_detail' org.id %}">
-                                        <div class="company">
-                                            <img width="184" height="110" src="{{ MEDIA_URL }}{{ org.image }}"/>
-                                            <div class="score">
-                                                <div class="circle">
-                                                    <h2>{{ org.industry.name }}</h2>
-                                                </div>
-                                            </div>
-                                        </div>
-{#                                        <p><span class="key" title="{{ org.name }}">{{ org.name }}</span></p>#}
-                                    </a>
-                                </li>
-                            {% endfor %}
-
-
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 {% endblock %}
 
 {% block custom_js %}
