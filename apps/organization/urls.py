@@ -1,6 +1,7 @@
 # encoding: utf-8
+from operation.views import AddFavView
 from organization.views import OrgView, AddUserAskView, OrgHomeView, OrgCourseView, OrgDescView, OrgTeacherView, \
-    AddFavView, TeacherListView, TeacherDetailView
+    TeacherListView, TeacherDetailView
 
 __author__ = 'mtianyan'
 __date__ = '2018/1/12 0012 03:28'

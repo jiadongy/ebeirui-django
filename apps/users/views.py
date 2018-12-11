@@ -545,19 +545,4 @@ class MyMessageView(LoginRequiredMixin, View):
         })
 
 
-# 首页view
-class IndexView(View):
-    @staticmethod
-    def get(request):
-        # 取出轮播图
-        all_banner = Banner.objects.all().order_by('index')[:5]
-        # 正常位职位
-        jobs = Jobs.objects.all().order_by("-add_time")[:6]
-        # 招聘机构
-        orgs = Recruiter.objects.all().order_by("-add_time")[:15]
-        return render(request, 'index.html', {
-            "all_banner": all_banner,
-            "jobs": jobs,
-            "orgs": orgs,
 
-        })

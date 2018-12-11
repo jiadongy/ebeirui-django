@@ -4,9 +4,6 @@ __date__ = '2018/1/9 0009 22:12'
 
 import xadmin
 
-from .models import UserAsk, UserCourse, UserMessage, CourseComments
-from operation.common_models import UserFavorite
-
 # # 用户表单我要学习后台管理器
 # class UserAskAdmin(object):
 #     list_display = ['name', 'mobile', 'course_name', 'add_time']

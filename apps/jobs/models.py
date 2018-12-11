@@ -89,12 +89,12 @@ class CompanyComments(models.Model):
 # 职位
 class Jobs(models.Model):
     TYPE_CHOICES = (
-        (u"实习", u"实习岗位"),
-        (u"校招", u"校招岗位"),
-        (u"社招", u"社招岗位"),
+        (u"sx", u"实习岗位"),
+        (u"xz", u"校招岗位"),
+        (u"sz", u"社招岗位"),
     )
 
-    job_type = models.CharField(max_length=50, choices=TYPE_CHOICES, verbose_name=u"职位类型", default="实习")
+    job_type = models.CharField(max_length=50, choices=TYPE_CHOICES, verbose_name=u"职位类型", default="sx")
     company = models.ForeignKey(Recruiter, on_delete=models.CASCADE, verbose_name=u"机构名称")
     depart = models.CharField(max_length=50, verbose_name=u"部门")
     industry = models.ForeignKey(IndustryDict, on_delete=models.CASCADE, verbose_name=u"行业")

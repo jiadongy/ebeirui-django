@@ -11,8 +11,11 @@
     <div id="center">
         <div id=content>
             <div id="job">
-                <div class="jobtit">热门岗位> &nbsp;&nbsp; <span style="float:right"> <a href="{% url 'jobs:job_list' %}"
-                                                                                     style="font-size:12px">查看更多信息 ></a></span></div>
+                <div class="jobtit">热门岗位> &nbsp;&nbsp;
+                    <span style="float:right">
+                        <a href="{% url 'jobs:job_list' %}" style="font-size:12px">查看更多信息 ></a>
+                    </span>
+                </div>
 
                 {% for job in jobs %}
                     <div class="job_post">
@@ -28,13 +31,15 @@
                         </div>
                         <div class="job_post_meta">
                             <p>
-                                <span>{{ job.job_type }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <span>{{ job.job_type_desc }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <span>部门：{{ job.depart }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <span>发布时间：{{ job.add_time |date:"F j, Y" }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <span>职位编号：{{ job.id }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <span>收藏</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <span>发布时间：{{ job.add_time |date:"Y-m-d" }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                {#                                <span>职位编号：{{ job.id }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#}
+                                <span><a onclick="add_fav(this,{{ job.id }},5)">收藏</a></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <span>查看点评数据</span>
-                                <span style="float:right"><a href="{% url 'jobs:job_detail' job.id %}" target="_blank"> ....详情&nbsp;&nbsp;</a></span>
+                                <span style="float:right">
+                                    <a href="{% url 'jobs:job_detail' job.id %}" target="_blank"> ....详情&nbsp;&nbsp;</a>
+                                </span>
                             </p>
                         </div>
                     </div>
@@ -105,4 +110,32 @@
 
 {% block custom_js %}
     <script type="text/javascript" src="{% static 'js/index.js' %}"></script>
+    <script type="text/javascript">
+        //收藏分享
+        function add_fav(current_elem, fav_id, fav_type) {
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: "{% url "org:add_fav" %}",
+                data: {'fav_id': fav_id, 'fav_type': fav_type},
+                async: true,
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                success: function (data) {
+                    if (data.status == 'fail') {
+                        if (data.msg == '用户未登录') {
+                            window.location.href = "{% url 'login' %}?next={{ request.path }}";
+                        } else {
+                            alert(data.msg)
+                        }
+
+                    } else if (data.status == 'success') {
+                        current_elem.text(data.msg)
+                    }
+                },
+            });
+        }
+
+    </script>
 {% endblock %}

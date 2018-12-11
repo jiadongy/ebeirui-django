@@ -26,7 +26,8 @@ import xadmin
 from Mxonline3 import rest_urls
 from Mxonline3.settings import MEDIA_ROOT
 # from users.views import user_login
-from users.views import LoginView, RegisterView, ActiveUserView, ForgetPwdView, ResetView, ModifyPwdView, LogoutView, IndexView
+from aggregate.views import IndexView
+from users.views import LoginView, RegisterView, ActiveUserView, ForgetPwdView, ResetView, ModifyPwdView, LogoutView
 
 urlpatterns = rest_urls.urlpatterns + [
     path('api-auth/', include('rest_framework.urls')),
@@ -72,6 +73,8 @@ urlpatterns = rest_urls.urlpatterns + [
     path("course/", include('courses.urls', namespace="course")),
     # user app的url配置
     path("users/", include('users.urls', namespace="users")),
+    # aggregate app的url配置
+    path("aggregate/", include('aggregate.urls', namespace="aggregate")),
 
     # coreAPI schema
     url('^schema$', get_schema_view(title="Example API")),
